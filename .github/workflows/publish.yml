@@ -23,7 +23,6 @@ jobs:
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
-          cd docs
           yarn 
           yarn build
       - name: Deploy to GitHub Pages
@@ -31,6 +30,6 @@ jobs:
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
-          build_dir: docs/build
+          build_dir: build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

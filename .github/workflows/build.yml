@@ -26,6 +26,5 @@ jobs:
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
-          cd ../docs
           yarn
           yarn build
