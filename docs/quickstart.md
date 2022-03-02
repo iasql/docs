@@ -62,7 +62,7 @@ import TabItem from '@theme/TabItem';
 $ iasql new
 
 ✔ IaSQL db name · startup
-✔ Pick AWS region · us-east-2
+✔ Pick AWS region · us-east-1
 ✔ Default AWS CLI credentials found. Do you wish to use those? · yes
 ✔ Pick AWS Profile · default
 ✔ Done
