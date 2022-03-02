@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 
   ```bash
-  wget https://github.com/iasql/releases/releases/latest/download/iasql_ubuntu_amd64.deb
+  wget https://github.com/iasql/cli/releases/latest/download/iasql_ubuntu_amd64.deb
   sudo dpkg -i iasql_ubuntu_amd64.deb
   ```
 
