@@ -57,6 +57,18 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
         },
         items: [
           {
+            to: 'https://github.com/iasql/iasql-engine',
+            target: '_self',
+            label: 'GitHub',
+            position: 'right',
+          },
+          {
+            to: 'https://discord.com/invite/machGGczea',
+            target: '_self',
+            label: 'Discord',
+            position: 'right'
+          },
+          {
             to: 'https://blog.iasql.com',
             target: '_self',
             label: 'Blog',
@@ -86,8 +98,12 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
             title: 'Community',
             items: [
               {
-                label: 'Reddit',
-                href: 'https://reddit.com/r/iasql',
+                label: 'Discord',
+                href: 'https://discord.com/invite/machGGczea',
+              },
+              {
+                label: 'Forum',
+                href: 'https://github.com/iasql/iasql-engine/discussions',
               },
               {
                 label: 'Twitter',
