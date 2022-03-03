@@ -70,7 +70,7 @@ $ iasql new
 ├─────────────────┼───────────────────┼──────────┼──────────────────┤
 │ db.iasql.com    │ _4b2bb09a59a411e4 │ d0va6ywg │ nfdDh#EP4CyzveFr │
 └─────────────────┴───────────────────┴──────────┴──────────────────┘
-✔ As a PG connection string · postgres://b1qoe54n:AW1S2EW*RHdCZPkQ@127.0.0.1:5432/startup
+✔ As a PG connection string · postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4
 ! This is the only time we will show you these credentials, be sure to save them.
 ```
 
