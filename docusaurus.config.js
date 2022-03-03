@@ -92,6 +92,11 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
                 href: 'https://blog.iasql.com',
                 target: '_self',
               },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/iasql/iasql-engine',
+                target: '_self',
+              },
             ],
           },
           {

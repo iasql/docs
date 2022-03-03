@@ -6,7 +6,7 @@ slug: '/cli'
 # CLI API
 
 ```bash
-Infrastructure as SQL
+Infrastructure as a SQL DB
 
 USAGE:
     iasql <SUBCOMMAND>
@@ -20,7 +20,6 @@ SUBCOMMANDS:
     dbs          List all dbs
     export       Export a db dump to backup your infrastructure or import it into another db
     help         Prints this message or the help of the given subcommand(s)
-    import       Create a db from a previously exported dump
     install      Install mods in a given db
     login        Obtain and save credentials for the IaSQL service
     logout       Remove locally-stored credentials for the IaSQL service
