@@ -5,7 +5,7 @@ slug: '/quickstart'
 
 # Quickstart
 
-In this tutorial we will use IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
+In this tutorial we will use IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate. The built-in PostgreSQL client, `psql`, is in this tutorial to execute queries, but are many different clients can be used to [connect](/connect) to a PostgreSQL database.
 
 :::tip
 
