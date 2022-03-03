@@ -41,7 +41,7 @@ import TabItem from '@theme/TabItem';
   </TabItem>
   <TabItem value="Option 2: Create manually" label="Option 2: Create manually">
 
-  You can also create the shared credentials file manually in the correct location:
+  You can also create the `~/.aws/credentials` shared credentials file manually:
 
   ```bash
   [default]
@@ -60,7 +60,6 @@ import TabItem from '@theme/TabItem';
 
 ```bash
 $ iasql new
-
 ✔ IaSQL db name · startup
 ✔ Pick AWS region · us-east-1
 ✔ Default AWS CLI credentials found. Do you wish to use those? · yes
@@ -77,30 +76,30 @@ $ iasql new
 
 ## Add the necessary cloud services to your database
 
-Run `iasql install` and select the following modules on your prod db: `aws_cloudwatch`, `aws_ecr`, `aws_ecs`, `aws_elb` and `aws_security_group`.
+Immediately after showing you the connection information, you will be prompted to install modules into your database. Select the following: `aws_cloudwatch`, `aws_ecr`, `aws_ecs`, `aws_elb`, `aws_security_group`, and `aws_vpc`.
 
 ```bash
-$ iasql install
-
-✔ Pick IaSQL db · prod
 ? Use arrows to move, space to (de)select modules and enter to submit ›
-  [✔] aws_cloudwatch
-  [ ] aws_ec2
-  [✔] aws_ecr
-  [✔] aws_ecs
-  [✔] aws_elb
-  [ ] aws_rds
-❯ [✔] aws_security_group
+  [✔] aws_cloudwatch@0.0.1
+  [ ] aws_ec2@0.0.1
+  [✔] aws_ecr@0.0.1
+  [✔] aws_ecs@0.0.1
+  [✔] aws_elb@0.0.1
+  [ ] aws_rds@0.0.1
+  [✔] aws_security_group@0.0.1
+❯ [✔] aws_vpc@0.0.1
 ✔ Confirm installation · yes
 ✔ Done
 ```
 
+If you ever need to install more modules, you can do so with `iasql install` and to uninstall modules you no longer need, use `iasql uninstall`
+
 :::note
 
-Short command
+Short command to install these modules if you accidentally didn't select any on DB creation.
 
 ```bash
-$ iasql install --db prod aws_cloudwatch aws_ecr aws_ecs aws_elb aws_security_group
+$ iasql install --db startup aws_cloudwatch aws_ecr aws_ecs aws_elb aws_security_group aws_vpc
 
 ✔ Confirm installation · yes
 ✔ Done
@@ -134,7 +133,7 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 4. Apply the changes described in the db to your cloud account
 
 ```bash
-$ iasql apply prod
+$ iasql apply startup
 ✔ Press enter to confirm apply · yes
 TaskDefinition has 1 record to create
 ┌────┬──────────────────┬──────────────────┬──────────────────┬──────────┬─────────────┬──────────────────┬─────────────┬────────┬─────────────────┬───────────┐
@@ -267,7 +266,7 @@ psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -v proj
 3. Apply the changes described in the db to your cloud account
 
 ```bash
-$ iasql apply prod
+$ iasql apply startup
 ✔ Press enter to confirm apply · yes
 ...
 ```
