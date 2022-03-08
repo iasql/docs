@@ -5,7 +5,7 @@ slug: '/quickstart'
 
 # Quickstart
 
-In this tutorial we will use IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate. The built-in PostgreSQL client, `psql`, is in this tutorial to execute queries, but are many different clients can be used to [connect](/connect) to a PostgreSQL database.
+In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
 
 :::tip
 
@@ -109,20 +109,22 @@ $ iasql install --db startup aws_cloudwatch aws_ecr aws_ecs aws_elb aws_security
 
 ## Connect to your db and provision cloud resources
 
-1. Install `psql` in your command line by following the instructions for your corresponding OS [here](https://www.postgresql.org/download/)
-
-2. Get a local copy of the [SQL script](https://github.com/iasql/quickstart/blob/main/quickstart.sql) hosted in the repository for this quickstart
+1. Get a local copy of the [quickstart repository](https://github.com/iasql/quickstart/blob/main/quickstart.sql)
 
 ```bash
 git clone git@github.com:iasql/quickstart.git
 cd quickstart
 ```
 
-3. Run the script on your db by invoking `psql` with the connection string provided on db creation and set the desired `project-name` parameter that your resources will be named after:
+2. Install the `typeorm` CLI and the Node.js project that uses TypeORM under the `quickstart/infra` folder
 
 ```bash
-psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -v project_name="'quickstart'" -f quickstart.sql
+cd infra
+npm i
+npm -g i typeorm
 ```
+
+3. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `quickstart/infra/package.json`. If the name is not changed, `quickstart` will be used.
 
 :::note
 
@@ -130,7 +132,39 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 
 :::
 
-4. Apply the changes described in the db to your cloud account
+3. Create a [`ormconfig.json`](https://typeorm.io/#/using-ormconfig/using-ormconfigjson) with the connection parameters provided on db creation. In this case:
+
+```json title="quickstart/infra/ormconfig.json" {2-7}
+{
+   "type": "postgres",
+   "host": "db.iasql.com",
+   "username": "d0va6ywg",
+   "password": "nfdDh#EP4CyzveFr",
+   "database": "_4b2bb09a59a411e4",
+   "ssl": true,
+   "extra": {
+      "ssl": {
+         "rejectUnauthorized": false
+      }
+   },
+   "logging": false,
+   "migrations": [
+      "src/migration/**/*.js"
+   ],
+   "cli": {
+      "migrationsDir": "src/migration"
+   }
+}
+}
+```
+
+4. Run the existing TypeORM migration on your IaSQL db by invoking `typeorm` CLI
+
+```bash
+typeorm migration:run
+```
+
+5. Apply the changes described in the db to your cloud account
 
 ```bash
 $ iasql apply startup
@@ -182,7 +216,7 @@ Service has 1 record to create
 ┌────┬─────────────────────────┬─────┬────────┬─────────────────────────┬──────┬──────────────┬────────────┬────────────────────┬─────────┬───────────────┐
 │ id │ name                    │ arn │ status │ cluster                 │ task │ desiredCount │ launchType │ schedulingStrategy │ network │ loadBalancers │
 ├────┼─────────────────────────┼─────┼────────┼─────────────────────────┼──────┼──────────────┼────────────┼────────────────────┼─────────┼───────────────┤
-│ 1  │ quickstart-service      │     │        │ quickstart-cluster │      │ 1            │ FARGATE    │ REPLICA            │ ENABLED │               │
+│ 1  │ quickstart-service      │     │        │ quickstart-cluster      │      │ 1            │ FARGATE    │ REPLICA            │ ENABLED │               │
 └────┴─────────────────────────┴─────┴────────┴─────────────────────────┴──────┴──────────────┴────────────┴────────────────────┴─────────┴───────────────┘
 AwsLoadBalancer has 1 record to create
 ┌────┬───────────┬───────────┬─────────┬───────────┬──────────┬──────────┬────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┐
@@ -194,7 +228,9 @@ AwsLoadBalancer has 1 record to create
 
 ## Login, build and push your code to the container registry
 
-1. Grab your new `ECR URI` from your DB
+1. Install `psql` in your command line by following the instructions for your corresponding OS [here](https://www.postgresql.org/download/). Remember that many different clients can be used to [connect](/connect) to a PostgreSQL database.
+
+2. Grab your new `ECR URI` from your DB
 ```bash
 psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
 SELECT repository_uri
@@ -202,7 +238,7 @@ FROM aws_public_repository
 WHERE repository_name = '<project-name>-repository';"
 ```
 
-2. Login to AWS ECR using the AWS CLI. Run the following command and using the correct `<ECR-URI>` and AWS `<profile>`
+3. Login to AWS ECR using the AWS CLI. Run the following command and using the correct `<ECR-URI>` and AWS `<profile>`
 
 ```bash
 aws ecr-public get-login-password --region us-east-1 --profile <profile> | docker login --username AWS --password-stdin <ECR-URI>
@@ -214,25 +250,25 @@ The region *must* be `us-east-1` for public repositories.
 
 :::
 
-3. Build your image locally
+4. Build your image locally
 
 ```bash
 docker build -t <project-name>-repository hello-iasql
 ```
 
-4. Tag your image
+5. Tag your image
 
 ```bash
 docker tag <project-name>-repository:latest <ECR-URI>:latest
 ```
 
-5. Push your image
+6. Push your image
 
 ```bash
 docker push <ECR URI>:latest
 ```
 
-6. Grab your load balancer DNS and access your service!
+7. Grab your load balancer DNS and access your service!
 ```bash
 psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
 SELECT dns_name
@@ -240,7 +276,7 @@ FROM aws_load_balancer
 WHERE load_balancer_name = '<project-name>-load-balancer';"
 ```
 
-7. Connect to your service!
+8. Connect to your service!
 
 ```
 curl <DNS-NAME>:8088/health
@@ -257,10 +293,10 @@ aws ecr-public batch-delete-image \
       --image-ids imageTag=latest
 ```
 
-2. Run the script on your db by invoking `psql` with the connection string provided on db creation and set the `project-name` parameter provided on resource creation:
+2. Reverse the latest migration, which in this case only requires invoking the following command once:
 
 ```bash
-psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -v project_name="'quickstart'" -f clean-quickstart.sql
+typeorm migration:revert
 ```
 
 3. Apply the changes described in the db to your cloud account
