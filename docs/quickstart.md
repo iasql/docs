@@ -253,7 +253,7 @@ The region *must* be `us-east-1` for public repositories.
 4. Build your image locally
 
 ```bash
-docker build -t <project-name>-repository hello-iasql
+docker build -t <project-name>-repository app
 ```
 
 5. Tag your image
