@@ -116,12 +116,11 @@ git clone git@github.com:iasql/quickstart.git
 cd quickstart
 ```
 
-2. Install the `typeorm` CLI and the Node.js project that uses TypeORM under the `quickstart/infra` folder
+2. Install the Node.js project dependencies under the `quickstart/infra` folder
 
 ```bash
 cd infra
 npm i
-npm -g i typeorm
 ```
 
 3. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `quickstart/infra/package.json`. If the name is not changed, `quickstart` will be used.
@@ -155,13 +154,12 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
       "migrationsDir": "src/migration"
    }
 }
-}
 ```
 
 4. Run the existing TypeORM migration on your IaSQL db by invoking `typeorm` CLI
 
 ```bash
-typeorm migration:run
+npx typeorm migration:run
 ```
 
 5. Apply the changes described in the db to your cloud account
@@ -296,7 +294,7 @@ aws ecr-public batch-delete-image \
 2. Reverse the latest migration, which in this case only requires invoking the following command once:
 
 ```bash
-typeorm migration:revert
+npx typeorm migration:revert
 ```
 
 3. Apply the changes described in the db to your cloud account
