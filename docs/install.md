@@ -18,7 +18,7 @@ import TabItem from '@theme/TabItem';
   brew install iasql/homebrew-core/iasql
   ```
 
-  To upgrade the IaSQL CLI to the latest version after it has been previously installed.
+  To upgrade the IaSQL CLI to the latest version after it has been previously installed:
 
   ```bash
   brew upgrade iasql
