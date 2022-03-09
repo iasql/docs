@@ -11,11 +11,17 @@ import TabItem from '@theme/TabItem';
 <Tabs>
   <TabItem value="MacOS" label="MacOS" default>
 
-  Install the IaSQL CLI on MacOS via [Homebrew](https://brew.sh).
+  To install the IaSQL CLI on MacOS via [Homebrew](https://brew.sh):
 
 
   ```bash
   brew install iasql/homebrew-core/iasql
+  ```
+
+  To upgrade the IaSQL CLI to the latest version after it has been previously installed:
+
+  ```bash
+  brew upgrade iasql
   ```
 
   </TabItem>
