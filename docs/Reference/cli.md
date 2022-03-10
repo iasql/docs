@@ -6,7 +6,8 @@ slug: '/cli'
 # CLI API
 
 ```bash
-Infrastructure as a SQL DB
+iasql 0.2.5
+Manage cloud infrastructure via a hosted PostgreSQL DB
 
 USAGE:
     iasql <SUBCOMMAND>
@@ -16,16 +17,17 @@ FLAGS:
     -V, --version    Prints version information
 
 SUBCOMMANDS:
-    apply        Create, delete or update the resources in a db
-    dbs          List all dbs
-    export       Export a db dump to backup your infrastructure or import it into another db
-    help         Prints this message or the help of the given subcommand(s)
-    install      Install mods in a given db
-    login        Obtain and save credentials for the IaSQL service
-    logout       Remove locally-stored credentials for the IaSQL service
-    mods         List all modules or list the modules installed in a given database
-    new          Create a db to manage cloud resources
+    new          Connect a hosted db to a cloud account
+    remove       Remove a hosted db to stop managing the connected cloud account [aliases: rm]
+    dbs          List all hosted dbs
+    apply        Create, delete or update the cloud resources in a hosted db
     plan         Display a preview of the resources in a db to be modified on the next `apply`
-    remove       Remove a db and stop managing the cloud resources within it [aliases: rm]
-    uninstall    Uninstall mods from a given db
+    sync         Synchronize a hosted db with the current state of the cloud account
+    install      Install mods in a given hosted db
+    uninstall    Uninstall mods from a given hosted db
+    mods         List all modules or list the modules installed in a given hosted db
+    export       Dump a hosted db to backup the infrastructure in the connect account
+    login        Obtain and save credentials for hosted IaSQL engine
+    logout       Remove locally-stored credentials for the hosted IaSQL engine
+    help         Prints this message or the help of the given subcommand(s)
 ```
