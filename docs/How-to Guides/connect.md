@@ -5,15 +5,15 @@ slug: '/connect'
 
 # Connecting to a database
 
-The required information to connect to a PostgreSQL IaSQL database will provided on `iasql new` when provisioning the database connected to your AWS account. IaSQL does not store your database credentials so they will only be displayed when they are created. If you lose the credentials, you can recreate the database by running `iasql rm` and then `iasql new` again using the same region and AWS credentials.
+The required information to connect to a PostgreSQL IaSQL database will provided at the end of `iasql new` when provisioning the database connected to your AWS account. IaSQL does not store your database credentials so they will only be displayed when they are created. If you lose the credentials, you can recreate the database by running `iasql rm` and then `iasql new` again using the same region and AWS credentials.
 
 ```bash
 $ iasql new
+Manage a cloud account with a hosted IaSQL DB...
 
-✔ IaSQL db name · startup
-✔ Pick AWS region · us-east-1
-✔ Default AWS CLI credentials found. Do you wish to use those? · yes
-✔ Pick AWS Profile · default
+✔ AWS CLI credentials found. Pick named profile · default
+✔ Pick AWS region to manage with hosted db · us-east-1
+✔ Name for hosted IaSQL db · startup
 ✔ Done
 ┌─────────────────┬───────────────────┬──────────┬──────────────────┐
 │ Database Server │ Database Name     │ Username │ Password         │
