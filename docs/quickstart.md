@@ -63,9 +63,9 @@ $ iasql new
 Manage a cloud account with a hosted IaSQL DB...
 
 ✔ AWS CLI credentials found. Pick named profile · default
-✔ Pick AWS region to manage with hosted db · us-east-1
-✔ Name for hosted IaSQL db · startup
-✔ Done
+✔ Pick AWS region to manage · us-east-1
+✔ Optional db name · startup
+✔ Done provisioning hosted db
 ┌─────────────────┬───────────────────┬──────────┬──────────────────┐
 │ Database Server │ Database Name     │ Username │ Password         │
 ├─────────────────┼───────────────────┼──────────┼──────────────────┤
