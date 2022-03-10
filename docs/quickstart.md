@@ -52,18 +52,19 @@ import TabItem from '@theme/TabItem';
   </TabItem>
 </Tabs>
 
-## Start managing your AWS account with an IaSQL db
+## Start managing an AWS account with a hosted IaSQL db
 
-1. [Install](/install) the IaSQL service CLI
+1. [Install](/install) the IaSQL CLI
 
-2. Provision a new PG db to manage your AWS account by running `iasql new`. The CLI will prompt you to enter a name for the db, pick an AWS region and pick an AWS profile if you have more than one.
+2. Provision a hosted PostgreSQL db to manage your AWS account by running `iasql new`. The CLI will prompt you to enter a name for the db, pick an AWS region and pick an AWS profile if you have more than one.
 
 ```bash
 $ iasql new
-✔ IaSQL db name · startup
-✔ Pick AWS region · us-east-1
-✔ Default AWS CLI credentials found. Do you wish to use those? · yes
-✔ Pick AWS Profile · default
+Manage a cloud account with a hosted IaSQL DB...
+
+✔ AWS CLI credentials found. Pick named profile · default
+✔ Pick AWS region to manage with hosted db · us-east-1
+✔ Name for hosted IaSQL db · startup
 ✔ Done
 ┌─────────────────┬───────────────────┬──────────┬──────────────────┐
 │ Database Server │ Database Name     │ Username │ Password         │
@@ -74,9 +75,9 @@ $ iasql new
 ! This is the only time we will show you these credentials, be sure to save them.
 ```
 
-## Add the necessary cloud services to your database
+## Add the necessary cloud services to the hosted database
 
-Immediately after showing you the connection information, you will be prompted to install modules into your database. Select the following: `aws_cloudwatch`, `aws_ecr`, `aws_ecs`, `aws_elb`, `aws_security_group`, and `aws_vpc`.
+Immediately after showing you the connection information, you will be prompted to install modules into the hosted database. Select the following: `aws_cloudwatch`, `aws_ecr`, `aws_ecs`, `aws_elb`, `aws_security_group`, and `aws_vpc`.
 
 ```bash
 ? Use arrows to move, space to (de)select modules and enter to submit ›
@@ -107,7 +108,7 @@ $ iasql install --db startup aws_cloudwatch aws_ecr aws_ecs aws_elb aws_security
 
 :::
 
-## Connect to your db and provision cloud resources
+## Connect to the hosted db and provision cloud resources in your AWS account
 
 1. Get a local copy of the [quickstart repository](https://github.com/iasql/quickstart/blob/main/quickstart.sql)
 
@@ -156,13 +157,13 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 }
 ```
 
-4. Run the existing TypeORM migration on your IaSQL db by invoking `typeorm` CLI
+4. Run the existing TypeORM migration on the hosted IaSQL db by invoking `typeorm` CLI
 
 ```bash
 npx typeorm migration:run
 ```
 
-5. Apply the changes described in the db to your cloud account
+5. Apply the changes described in the hosted db to your cloud account
 
 ```bash
 $ iasql apply startup
@@ -228,7 +229,7 @@ AwsLoadBalancer has 1 record to create
 
 1. Install `psql` in your command line by following the instructions for your corresponding OS [here](https://www.postgresql.org/download/). Remember that many different clients can be used to [connect](/connect) to a PostgreSQL database.
 
-2. Grab your new `ECR URI` from your DB
+2. Grab your new `ECR URI` from the hosted DB
 ```bash
 psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
 SELECT repository_uri
@@ -280,7 +281,7 @@ WHERE load_balancer_name = '<project-name>-load-balancer';"
 curl <DNS-NAME>:8088/health
 ```
 
-## Clean up your environment
+## Clean up the created cloud resources
 
 1. Delete all the docker images in the repository
 
@@ -297,7 +298,7 @@ aws ecr-public batch-delete-image \
 npx typeorm migration:revert
 ```
 
-3. Apply the changes described in the db to your cloud account
+3. Apply the changes described in the hosted db to your cloud account
 
 ```bash
 $ iasql apply startup
