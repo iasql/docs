@@ -119,5 +119,13 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      algolia: {
+        // The application ID provided by Algolia
+        appId: '5D0XPJ20G6',
+        // Public API key: it is safe to commit it
+        apiKey: '3975e3fd292172a78a2092aecca9a2b5',
+        indexName: 'docs-iasql',
+        contextualSearch: true,
+      },
     }),
 });
