@@ -30,7 +30,7 @@ jobs:
       # https://docusaurus.io/docs/versioning#tagging-a-new-version
       - name: Tag a new version, commit the changes and push
         run: |
-          export VERSION=(${{ github.event.client_payload.version }} || ${{ github.event.inputs.version }})
+          VERSION=${${{ github.event.client_payload.version }}:-${{ github.event.inputs.version }}}
           yarn run docusaurus docs:version $VERSION
           git config --local user.email "iasql-bot@users.noreply.github.com"
           git config --local user.name "iasql-bot"
