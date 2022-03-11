@@ -56,11 +56,11 @@ import TabItem from '@theme/TabItem';
 
 1. [Install](/install) the IaSQL CLI
 
-2. Provision a hosted PostgreSQL db to manage your AWS account by running `iasql new`. The CLI will prompt you to enter a name for the db, pick an AWS region and pick an AWS profile if you have more than one.
+2. Provision a hosted PostgreSQL db to connect to your AWS account by running `iasql connect`. The CLI will prompt you to pick an AWS region to manage, pick an AWS profile (if you have more than one), and optionally enter a name for the db.
 
 ```bash
-$ iasql new
-Manage a cloud account with a hosted IaSQL DB...
+$ iasql connect
+Connect a cloud account to a hosted IaSQL DB...
 
 ✔ AWS CLI credentials found. Pick named profile · default
 ✔ Pick AWS region to manage · us-east-1
@@ -81,7 +81,7 @@ Immediately after showing you the connection information, you will be prompted t
 
 ```bash
 ? Use arrows to move, space to (de)select modules and enter to submit ›
-  [✔] aws_cloudwatch@0.0.1
+  [ ] aws_cloudwatch@0.0.1
   [ ] aws_ec2@0.0.1
   [✔] aws_ecr@0.0.1
   [✔] aws_ecs@0.0.1
