@@ -1,9 +1,9 @@
 ---
-sidebar_position: 3
-slug: '/quickstart'
+sidebar_position: 1
+slug: '/typeorm'
 ---
 
-# Quickstart
+# IaSQL on TypeORM
 
 In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
 
@@ -231,16 +231,16 @@ AwsLoadBalancer has 1 record to create
 
 2. Grab your new `ECR URI` from the hosted DB
 ```bash
-psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
+QUICKSTART_ECR_URI=$(psql -At postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
 SELECT repository_uri
 FROM aws_public_repository
-WHERE repository_name = '<project-name>-repository';"
+WHERE repository_name = '<project-name>-repository-us-east-1';")
 ```
 
 3. Login to AWS ECR using the AWS CLI. Run the following command and using the correct `<ECR-URI>` and AWS `<profile>`
 
 ```bash
-aws ecr-public get-login-password --region us-east-1 --profile <profile> | docker login --username AWS --password-stdin <ECR-URI>
+aws ecr-public get-login-password --region us-east-1 --profile <profile> | docker login --username AWS --password-stdin ${QUICKSTART_ECR_URI}
 ```
 
 :::note
@@ -258,27 +258,27 @@ docker build -t <project-name>-repository app
 5. Tag your image
 
 ```bash
-docker tag <project-name>-repository:latest <ECR-URI>:latest
+docker tag <project-name>-repository:latest ${QUICKSTART_ECR_URI}:latest
 ```
 
 6. Push your image
 
 ```bash
-docker push <ECR URI>:latest
+docker push ${QUICKSTART_ECR_URI}:latest
 ```
 
 7. Grab your load balancer DNS and access your service!
 ```bash
-psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
+QUICKSTART_LB_DNS=$(psql -At postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
 SELECT dns_name
 FROM aws_load_balancer
-WHERE load_balancer_name = '<project-name>-load-balancer';"
+WHERE load_balancer_name = '<project-name>-load-balancer';")
 ```
 
 8. Connect to your service!
 
 ```
-curl <DNS-NAME>:8088/health
+curl ${QUICKSTART_LB_DNS}:8088/health
 ```
 
 ## Clean up the created cloud resources
