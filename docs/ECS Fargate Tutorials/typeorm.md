@@ -9,7 +9,7 @@ In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migra
 
 :::tip
 
-All the code from this tutorial can be found in this [template repository](https://github.com/iasql/quickstart) which you can use to [create a new Github repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for your IaSQL project.
+All the code from this tutorial can be found in this [template repository](https://github.com/iasql/ecs-fargate-examples) which you can use to [create a new Github repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for your IaSQL project.
 
 :::
 
@@ -110,11 +110,11 @@ $ iasql install --db startup aws_cloudwatch aws_ecr aws_ecs aws_elb aws_security
 
 ## Connect to the hosted db and provision cloud resources in your AWS account
 
-1. Get a local copy of the [quickstart repository](https://github.com/iasql/quickstart/blob/main/quickstart.sql)
+1. Get a local copy of the [ECS Fargate examples repository](https://github.com/iasql/ecs-fargate-examples)
 
 ```bash
-git clone git@github.com:iasql/quickstart.git
-cd quickstart
+git clone git@github.com:iasql/ecs-fargate-examples.git
+cd ecs-fargate-examples/typeorm
 ```
 
 2. Install the Node.js project dependencies under the `quickstart/infra` folder
@@ -124,7 +124,7 @@ cd infra
 npm i
 ```
 
-3. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `quickstart/infra/package.json`. If the name is not changed, `quickstart` will be used.
+3. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `ecs-fargate-examples/typeorm/infra/package.json`. If the name is not changed, `quickstart` will be used.
 
 :::note
 
@@ -134,7 +134,7 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 
 3. Create a [`ormconfig.json`](https://typeorm.io/#/using-ormconfig/using-ormconfigjson) with the connection parameters provided on db creation. In this case:
 
-```json title="quickstart/infra/ormconfig.json" {2-7}
+```json title="ecs-fargate-examples/typeorm/infra/ormconfig.json" {2-7}
 {
    "type": "postgres",
    "host": "db.iasql.com",
