@@ -1,9 +1,9 @@
 ---
-sidebar_position: 3
-slug: '/quickstart'
+sidebar_position: 1
+slug: '/typeorm'
 ---
 
-# Quickstart
+# IaSQL on TypeORM
 
 In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
 
