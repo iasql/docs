@@ -141,6 +141,7 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
    "username": "d0va6ywg",
    "password": "nfdDh#EP4CyzveFr",
    "database": "_4b2bb09a59a411e4",
+   "migrationsTransactionMode": "none",
    "ssl": true,
    "extra": {
       "ssl": {
