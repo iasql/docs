@@ -9,4 +9,4 @@ If you are creating an ECS task that is hosted on AWS Fargate, or on an external
 
 Follow these instructions to create one: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
 
-Once you create the role, make sure the `aws_ecr` module has been added to your database with `SELECT iasql_install('aws_ecr');` and pass the [ECS role name when creating the ECS task definition](https://dbdocs.io/iasql/iasql?table=task_definition&schema=public&view=table_structure).
+Once you create the role, make sure the `aws_ecr` module has been added to your database with `SELECT iasql_install('aws_ecr');` and pass the ECS role ARN when inserting a row into the [ECS task definition](https://dbdocs.io/iasql/iasql?table=task_definition&schema=public&view=table_structure).
