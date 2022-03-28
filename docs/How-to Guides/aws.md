@@ -9,7 +9,7 @@ IaSQL requires cloud credentials to manage and provision resources. First, make 
 
 There are two parts to each [access key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys), which you’ll see in the IAM console/CLI after you create it, an id and a secret.
 
-![](/screenshots/credentials.png)
+<img width={440} src={require('@site/static/screenshots/connect-manual.png').default} />
 
 ## View existing AWS CLI credentials
 
@@ -25,4 +25,6 @@ aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
 
 ## Directly connect an AWS account to an IaSQL database
 
-![](/screenshots/connect-direct.png)
+Connecting an AWS account directly will redirect you to the AWS console to create a new [IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html) with its credentials. Please make sure you are logged in to the correct AWS account. Please do not modify the fields in the cloud formation template or the account will be misconfigured.
+
+<img width={440} src={require('@site/static/screenshots/connect-direct.png').default} />
