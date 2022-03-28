@@ -13,7 +13,7 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
   title: 'IaSQL',
-  tagline: 'Manage cloud infrastructure using a hosted PostgreSQL db',
+  tagline: 'Infrastructure as data in PostgreSQL',
   url: config.url,
   baseUrl: '/',
   trailingSlash: true,
@@ -59,6 +59,11 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
         },
         items: [
           {
+            to: 'https://app.iasql.com',
+            target: '_self',
+            label: 'Dashboard',
+          },
+          {
             to: 'https://dbdocs.io/iasql/iasql',
             target: '_self',
             label: 'Schema',
@@ -67,11 +72,6 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
             to: 'https://discord.com/invite/machGGczea',
             target: '_self',
             label: 'Discord',
-          },
-          {
-            to: 'https://blog.iasql.com',
-            target: '_self',
-            label: 'Blog',
           },
           {
             href: 'https://github.com/iasql/iasql-engine',
@@ -87,6 +87,11 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
           {
             title: 'Product',
             items: [
+              {
+                label: 'Dashboard',
+                href: 'https://app.iasql.com',
+                target: '_self'
+              },
               {
                 label: 'Schema',
                 href: 'https://dbdocs.io/iasql/iasql',
