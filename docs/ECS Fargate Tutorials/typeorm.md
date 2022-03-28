@@ -52,7 +52,7 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 ## Add the necessary cloud services to the hosted database
 
-1. Install `psql` in your command line by following the instructions for your corresponding OS [here](https://www.postgresql.org/download/). Remember that many different clients can be used to [connect](/connect) to a PostgreSQL database.
+1. Many different clients can be used to [connect](/connect) to a PostgreSQL database. For this tutorial, we'll use the standard `psql` CLI client. If you need to install `psql`, follow the instructions for your corresponding OS [here](https://www.postgresql.org/download/).
 
 2. Call the `iasql_install` SQL function to install [modules](/module) into the hosted database.
 
