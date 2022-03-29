@@ -150,7 +150,7 @@ flyway migrate
 
 6. Apply the changes described in the hosted db to your cloud account
 
-```sql title="ecs-fargate-examples/flyway/infra/V2__init.sql"
+```sql title="my_project/infra/V2__init.sql"
 SELECT * from iasql_apply();
 ```
 
