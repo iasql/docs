@@ -54,7 +54,7 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 1. Many different clients can be used to [connect](/connect) to a PostgreSQL database. For this tutorial, we'll use the standard `psql` CLI client. If you need to install `psql`, follow the instructions for your corresponding OS [here](https://www.postgresql.org/download/).
 
-2. The first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
+2. The `up` part of the first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
 
 ```sql title="ecs-fargate-examples/typeorm/infra/src/migration/1646683871211-Install.js"
 SELECT * from iasql_install(
@@ -147,7 +147,7 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 npx typeorm migration:run
 ```
 
-5. The second, and last, migration will apply the changes described in the hosted db to your cloud account
+5. The `up` part of the second, and last, migration will apply the changes described in the hosted db to your cloud account
 
 ```sql title="ecs-fargate-examples/typeorm/infra/1646683871219-Initial.js"
 ...
@@ -242,7 +242,7 @@ aws ecr-public batch-delete-image \
 npx typeorm migration:revert
 ```
 
-3. The second, and last, migration reverts the changes and calls the `iasql_apply` function:
+3. The `down` part of the second, and last, migration is called which reverts the changes and calls the `iasql_apply` function:
 
 ```sql title="ecs-fargate-examples/typeorm/infra/1646683871219-Initial.js"
 ...
