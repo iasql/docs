@@ -97,8 +97,9 @@ If the function call is successful, it will return a virtual table with a record
 1. Get a local copy of the [ECS Fargate examples repository](https://github.com/iasql/ecs-fargate-examples)
 
 ```bash
-git clone git@github.com:iasql/ecs-fargate-examples.git
-cd ecs-fargate-examples/flyway
+git clone git@github.com:iasql/ecs-fargate-examples.git my_project
+cd my_project
+git filter-branch --subdirectory-filter flyway
 ```
 
 2. Install the Node.js project dependencies under the `quickstart/infra` folder
