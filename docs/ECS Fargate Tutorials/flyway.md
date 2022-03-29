@@ -1,11 +1,11 @@
 ---
-sidebar_position: 1
-slug: '/typeorm'
+sidebar_position: 2
+slug: '/flyway'
 ---
 
-# IaSQL on TypeORM (SQL ORM)
+# IaSQL on Flyway (SQL)
 
-In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
+In this tutorial we will run [Flyway SQL migrations](https://flywaydb.org/documentation/concepts/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
 
 :::tip
 
@@ -54,9 +54,9 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 1. Many different clients can be used to [connect](/connect) to a PostgreSQL database. For this tutorial, we'll use the standard `psql` CLI client. If you need to install `psql`, follow the instructions for your corresponding OS [here](https://www.postgresql.org/download/).
 
-2. The `up` part of the first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
+2. The first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
 
-```sql title="my_project/infra/src/migration/1646683871211-Install.js"
+```sql title="my_project/migrations/V1__install.sql"
 SELECT * from iasql_install(
    'aws_cloudwatch@0.0.1',
    'aws_ecr@0.0.1',
@@ -99,7 +99,7 @@ If the function call is successful, it will return a virtual table with a record
 ```bash
 git clone git@github.com:iasql/ecs-fargate-examples.git my_project
 cd my_project
-git filter-branch --subdirectory-filter typeorm
+git filter-branch --subdirectory-filter flyway
 ```
 
 2. Install the Node.js project dependencies under the `quickstart/infra` folder
@@ -109,7 +109,30 @@ cd infra
 npm i
 ```
 
-3. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `my_project/infra/package.json`. If the name is not changed, `quickstart` will be used.
+3. Create a [`flyway.conf`](https://flywaydb.org/documentation/configuration/configfile) with the connection parameters provided on db creation. In this case:
+
+```conf title="my_project/flyway.conf" {1-4}
+flyway.url=jdbc:postgresql://db.iasql.com/_4b2bb09a59a411e4
+flyway.user=d0va6ywg
+flyway.password=nfdDh#EP4CyzveFr
+flyway.locations=filesystem:migrations
+flyway.failOnMissingLocations=true
+
+# Run all migrations by seting the baseline version for v0
+# https://flywaydb.org/documentation/configuration/parameters/baselineVersion
+flyway.baselineVersion=0.0
+flyway.baselineOnMigrate=true
+flyway.validateMigrationNaming=true
+# Flyway supports placeholder replacement with configurable prefixes and suffixes.
+# By default it looks for Ant-style placeholders like ${myplaceholder} in SQL syntax
+flyway.placeholders.projectName=quickstart
+flyway.placeholders.taskDefResources=2vCPU-8GB
+flyway.placeholders.imageTag=latest
+flyway.placeholders.containerMemReservation=8192
+flyway.placeholders.port=8088
+```
+
+4. (Optional) Set the desired project name that your resources will be named after by changing `flyway.placeholders.projectName` in `my_project/flyway.conf`. If the name is not changed, `quickstart` will be used.
 
 :::note
 
@@ -117,41 +140,17 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 
 :::
 
-3. Create a [`ormconfig.json`](https://typeorm.io/#/using-ormconfig/using-ormconfigjson) with the connection parameters provided on db creation. In this case:
+5. Install the `flyway` CLI following the [corresponding instructions](https://flywaydb.org/documentation/usage/commandline/) for your OS
 
-```json title="my_project/infra/ormconfig.json" {2-7}
-{
-   "type": "postgres",
-   "host": "db.iasql.com",
-   "username": "d0va6ywg",
-   "password": "nfdDh#EP4CyzveFr",
-   "database": "_4b2bb09a59a411e4",
-   "ssl": true,
-   "extra": {
-      "ssl": {
-         "rejectUnauthorized": false
-      }
-   },
-   "logging": false,
-   "migrations": [
-      "src/migration/**/*.js"
-   ],
-   "cli": {
-      "migrationsDir": "src/migration"
-   }
-}
-```
-
-4. Run the existing TypeORM migrations on the hosted IaSQL db by invoking `typeorm` CLI
+5. Run the existing Flyway migrations on the hosted IaSQL db by invoking the `flyway` CLI
 
 ```bash
-npx typeorm migration:run
+flyway migrate
 ```
 
-5. The `up` part of the second, and last, migration will apply the changes described in the hosted db to your cloud account
+6. Apply the changes described in the hosted db to your cloud account
 
-```sql title="my_project/infra/1646683871219-Initial.js"
-...
+```sql title="my_project/migrations/V2__init.sql"
 SELECT * from iasql_apply();
 ```
 
@@ -237,16 +236,15 @@ aws ecr-public batch-delete-image \
       --image-ids imageTag=latest
 ```
 
-2. Reverse the latest migration, which in this case only requires invoking the following command once:
+2. Delete all iasql records invoking the void `delete_all_records` function:
 
-```bash
-npx typeorm migration:revert
+```sql title="psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c"
+SELECT delete_all_records();
 ```
 
-3. The `down` part of the second, and last, migration is called which reverts the changes and calls the `iasql_apply` function:
+3. Apply the changes described in the hosted db to your cloud account
 
-```sql title="my_project/infra/1646683871219-Initial.js"
-...
+```sql title="psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c"
 SELECT * from iasql_apply();
 ```
 
