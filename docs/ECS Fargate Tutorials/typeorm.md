@@ -56,7 +56,7 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 2. The `up` part of the first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
 
-```sql title="ecs-fargate-examples/typeorm/infra/src/migration/1646683871211-Install.js"
+```sql title="my_project/infra/src/migration/1646683871211-Install.js"
 SELECT * from iasql_install(
    'aws_cloudwatch@0.0.1',
    'aws_ecr@0.0.1',
@@ -97,8 +97,9 @@ If the function call is successful, it will return a virtual table with a record
 1. Get a local copy of the [ECS Fargate examples repository](https://github.com/iasql/ecs-fargate-examples)
 
 ```bash
-git clone git@github.com:iasql/ecs-fargate-examples.git
-cd ecs-fargate-examples/typeorm
+git clone git@github.com:iasql/ecs-fargate-examples.git my_project
+cd my_project
+git filter-branch --subdirectory-filter typeorm
 ```
 
 2. Install the Node.js project dependencies under the `quickstart/infra` folder
@@ -108,7 +109,7 @@ cd infra
 npm i
 ```
 
-3. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `ecs-fargate-examples/typeorm/infra/package.json`. If the name is not changed, `quickstart` will be used.
+3. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `my_project/infra/package.json`. If the name is not changed, `quickstart` will be used.
 
 :::note
 
@@ -118,7 +119,7 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 
 3. Create a [`ormconfig.json`](https://typeorm.io/#/using-ormconfig/using-ormconfigjson) with the connection parameters provided on db creation. In this case:
 
-```json title="ecs-fargate-examples/typeorm/infra/ormconfig.json" {2-7}
+```json title="my_project/infra/ormconfig.json" {2-7}
 {
    "type": "postgres",
    "host": "db.iasql.com",
@@ -149,7 +150,7 @@ npx typeorm migration:run
 
 5. The `up` part of the second, and last, migration will apply the changes described in the hosted db to your cloud account
 
-```sql title="ecs-fargate-examples/typeorm/infra/1646683871219-Initial.js"
+```sql title="my_project/infra/1646683871219-Initial.js"
 ...
 SELECT * from iasql_apply();
 ```
@@ -244,7 +245,7 @@ npx typeorm migration:revert
 
 3. The `down` part of the second, and last, migration is called which reverts the changes and calls the `iasql_apply` function:
 
-```sql title="ecs-fargate-examples/typeorm/infra/1646683871219-Initial.js"
+```sql title="my_project/infra/1646683871219-Initial.js"
 ...
 SELECT * from iasql_apply();
 ```

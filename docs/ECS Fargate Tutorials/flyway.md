@@ -56,7 +56,7 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 2. The first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
 
-```sql title="ecs-fargate-examples/flyway/infra/V1__install.sql"
+```sql title="my_project/migrations/V1__install.sql"
 SELECT * from iasql_install(
    'aws_cloudwatch@0.0.1',
    'aws_ecr@0.0.1',
@@ -111,11 +111,11 @@ npm i
 
 3. Create a [`flyway.conf`](https://flywaydb.org/documentation/configuration/configfile) with the connection parameters provided on db creation. In this case:
 
-```conf title="ecs-fargate-examples/flyway/flyway.conf" {1-4}
+```conf title="my_project/flyway.conf" {1-4}
 flyway.url=jdbc:postgresql://db.iasql.com/_4b2bb09a59a411e4
 flyway.user=d0va6ywg
 flyway.password=nfdDh#EP4CyzveFr
-flyway.locations=filesystem:infra
+flyway.locations=filesystem:migrations
 flyway.failOnMissingLocations=true
 
 # Run all migrations by seting the baseline version for v0
@@ -150,7 +150,7 @@ flyway migrate
 
 6. Apply the changes described in the hosted db to your cloud account
 
-```sql title="my_project/infra/V2__init.sql"
+```sql title="my_project/migrations/V2__init.sql"
 SELECT * from iasql_apply();
 ```
 
