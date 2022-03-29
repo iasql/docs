@@ -132,7 +132,7 @@ flyway.placeholders.containerMemReservation=8192
 flyway.placeholders.port=8088
 ```
 
-4. (Optional) Set the desired project name that your resources will be named after by changing `flyway.placeholders.projectName` in `ecs-fargate-examples/flyway/flyway.conf`. If the name is not changed, `quickstart` will be used.
+4. (Optional) Set the desired project name that your resources will be named after by changing `flyway.placeholders.projectName` in `my_project/flyway.conf`. If the name is not changed, `quickstart` will be used.
 
 :::note
 
