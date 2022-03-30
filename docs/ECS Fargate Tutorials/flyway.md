@@ -9,7 +9,7 @@ In this tutorial we will run [Flyway SQL migrations](https://flywaydb.org/docume
 
 :::tip
 
-All the code from this tutorial can be found in this [template repository](https://github.com/iasql/ecs-fargate-examples) which you can use to [create a new Github repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for your IaSQL project.
+All the code from this tutorial can be found in this template [repository folder](https://github.com/iasql/ecs-fargate-examples/tree/main/flyway) which you can use to create a new Github repository for your IaSQL project.
 
 :::
 
@@ -102,7 +102,7 @@ cd my_project
 git filter-branch --subdirectory-filter flyway
 ```
 
-2. Install the Node.js project dependencies under the `quickstart/infra` folder
+2. Install the Node.js project dependencies under the `my_project/infra` folder
 
 ```bash
 cd infra
@@ -111,7 +111,7 @@ npm i
 
 3. Create a [`flyway.conf`](https://flywaydb.org/documentation/configuration/configfile) with the connection parameters provided on db creation. In this case:
 
-```conf title="my_project/flyway.conf" {1-4}
+```bash title="my_project/flyway.conf" {1-4}
 flyway.url=jdbc:postgresql://db.iasql.com/_4b2bb09a59a411e4
 flyway.user=d0va6ywg
 flyway.password=nfdDh#EP4CyzveFr
@@ -142,13 +142,13 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 
 5. Install the `flyway` CLI following the [corresponding instructions](https://flywaydb.org/documentation/usage/commandline/) for your OS
 
-5. Run the existing Flyway migrations on the hosted IaSQL db by invoking the `flyway` CLI
+6. Run the existing Flyway migrations on the hosted IaSQL db by invoking the `flyway` CLI
 
 ```bash
 flyway migrate
 ```
 
-6. Apply the changes described in the hosted db to your cloud account
+7. Apply the changes described in the hosted db to your cloud account which will take a few minutes waiting for AWS
 
 ```sql title="my_project/migrations/V2__init.sql"
 SELECT * from iasql_apply();

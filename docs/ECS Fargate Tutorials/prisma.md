@@ -1,15 +1,15 @@
 ---
-sidebar_position: 1
-slug: '/typeorm'
+sidebar_position: 2
+slug: '/prisma'
 ---
 
-# IaSQL on TypeORM (SQL ORM)
+# IaSQL on Prisma (Javascript)
 
-In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
+In this tutorial we will use a script that uses [Prisma](https://www.prisma.io) to instrospect the schema of an IaSQL database and deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
 
 :::tip
 
-All the code from this tutorial can be found in this [repository folder](https://github.com/iasql/ecs-fargate-examples/tree/main/typeorm) which you can use to create a new Github repository for your IaSQL project.
+All the code from this tutorial can be found in this [repository folder](https://github.com/iasql/ecs-fargate-examples/tree/main/prisma) which you can use to create a new Github repository for your IaSQL project.
 
 :::
 
@@ -54,9 +54,9 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 1. Many different clients can be used to [connect](/connect) to a PostgreSQL database. For this tutorial, we'll use the standard `psql` CLI client. If you need to install `psql`, follow the instructions for your corresponding OS [here](https://www.postgresql.org/download/).
 
-2. The `up` part of the first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
+2. The first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
 
-```sql title="my_project/infra/src/migration/1646683871211-Install.js"
+```sql title="psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c"
 SELECT * from iasql_install(
    'aws_cloudwatch@0.0.1',
    'aws_ecr@0.0.1',
@@ -99,7 +99,7 @@ If the function call is successful, it will return a virtual table with a record
 ```bash
 git clone git@github.com:iasql/ecs-fargate-examples.git my_project
 cd my_project
-git filter-branch --subdirectory-filter typeorm
+git filter-branch --subdirectory-filter prisma
 ```
 
 2. Install the Node.js project dependencies under the `my_project/infra` folder
@@ -109,7 +109,13 @@ cd infra
 npm i
 ```
 
-3. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `my_project/infra/package.json`. If the name is not changed, `quickstart` will be used.
+3. Modify the [`.env file`](https://www.prisma.io/docs/guides/development-environment/environment-variables) that prisma expects with the connection parameters provided on db creation. In this case:
+
+```bash title="my_project/infra/.env"
+DATABASE_URL="postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4"
+```
+
+4. (Optional) Set the desired project name that your resources will be named after by changing the `name` in the `my_project/infra/package.json`. If the name is not changed, `quickstart` will be used.
 
 :::note
 
@@ -117,42 +123,45 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 
 :::
 
-3. Create a [`ormconfig.json`](https://typeorm.io/#/using-ormconfig/using-ormconfigjson) with the connection parameters provided on db creation. In this case:
+5. Per the [Prisma quickstart to add an existing project](https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/connect-your-database-node-postgres), create a basic `schema.prisma` file.
 
-```json title="my_project/infra/ormconfig.json" {2-7}
-{
-   "type": "postgres",
-   "host": "db.iasql.com",
-   "username": "d0va6ywg",
-   "password": "nfdDh#EP4CyzveFr",
-   "database": "_4b2bb09a59a411e4",
-   "ssl": true,
-   "extra": {
-      "ssl": {
-         "rejectUnauthorized": false
-      }
-   },
-   "logging": false,
-   "migrations": [
-      "src/migration/**/*.js"
-   ],
-   "cli": {
-      "migrationsDir": "src/migration"
-   }
+```json title="my_project/infra/prisma/schema.prisma"
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 ```
 
-4. Run the existing TypeORM migrations on the hosted IaSQL db by invoking `typeorm` CLI
+6. Pull, or introspect, the schema from your database which will autopopulate the rest of the `schema.prisma` file
 
-```bash
-npx typeorm migration:run
+```
+npx prisma db pull
 ```
 
-5. The `up` part of the second, and last, migration will apply the changes described in the hosted db to your cloud account which will take a few minutes waiting for AWS
+7. Now install and generate the Prisma client in accordance to the introspected `schema.prisma`
 
-```sql title="my_project/infra/1646683871219-Initial.js"
-...
-SELECT * from iasql_apply();
+```
+npx prisma generate
+```
+
+:::caution
+
+If you install or uninstall IaSQL [modules](/module) the database schema will change and you will need to run steps 5 through 7 to
+introspect the correct schema once again.
+
+:::
+
+8. Run the existing script using the Prisma entitites
+
+```bash
+node index.js
+```
+
+The last part of the script will apply the changes described in the hosted db to your cloud account which will take a few minutes waiting for AWS
+
+```js title="my_project/migrations/index.js"
+const apply = await prisma.$queryRaw`SELECT * from iasql_apply();`
+console.dir(apply)
 ```
 
 If the function call is successful, it will return a virtual table with a record for each cloud resource that has been created, deleted or updated.
@@ -237,16 +246,15 @@ aws ecr-public batch-delete-image \
       --image-ids imageTag=latest
 ```
 
-2. Reverse the latest migration, which in this case only requires invoking the following command once:
+2. Delete all iasql records invoking the void `delete_all_records` function:
 
-```bash
-npx typeorm migration:revert
+```sql title="psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c"
+SELECT delete_all_records();
 ```
 
-3. The `down` part of the second, and last, migration is called which reverts the changes and calls the `iasql_apply` function:
+3. Apply the changes described in the hosted db to your cloud account
 
-```sql title="my_project/infra/1646683871219-Initial.js"
-...
+```sql title="psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c"
 SELECT * from iasql_apply();
 ```
 
