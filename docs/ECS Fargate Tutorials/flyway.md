@@ -225,7 +225,13 @@ WHERE load_balancer_name = '<project-name>-load-balancer';")
 curl ${QUICKSTART_LB_DNS}:8088/health
 ```
 
-## Clean up the created cloud resources
+## Delete managed cloud resources
+
+:::warning
+
+If you did not create a new account this section will delete **all** records managed by IaSQL, including the ones that previously existed in the account under any of the used modules. Run `SELECT * FROM iasql_plan_apply()` after `SELECT delete_all_records();` and before `SELECT iasql_apply();` to get a preview of what would get deleted. To undo `SELECT delete_all_records();`, simply run `SELECT iasql_sync();` which will synchronize the database with the cloud's state.
+
+:::
 
 1. Delete all the docker images in the repository
 
