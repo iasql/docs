@@ -146,9 +146,9 @@ DATABASES = {
     ...
     'infra': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
+        'NAME': environ['DB_NAME'],
+        'USER': environ['DB_USER'],
+        'PASSWORD': environ['DB_PASSWORD'],
         'HOST': 'db.iasql.com',
         'PORT': '5432',
     }
