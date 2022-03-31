@@ -177,7 +177,7 @@ If the function call is successful, it will return a virtual table with a record
 ```bash
 QUICKSTART_ECR_URI=$(psql -At postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
 SELECT repository_uri
-FROM aws_public_repository
+FROM public_repository
 WHERE repository_name = '<project-name>-repository-us-east-1';")
 ```
 
@@ -215,7 +215,7 @@ docker push ${QUICKSTART_ECR_URI}:latest
 ```bash
 QUICKSTART_LB_DNS=$(psql -At postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
 SELECT dns_name
-FROM aws_load_balancer
+FROM load_balancer
 WHERE load_balancer_name = '<project-name>-load-balancer';")
 ```
 
