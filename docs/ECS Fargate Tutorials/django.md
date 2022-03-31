@@ -112,18 +112,26 @@ source <env-name>/bin/activate
 3. Install the project dependencies under the `my_project/app` folder
 
 ```bash
+cd app
 pip install -r requirements.txt
 ```
 
 3. Create a `.env` file with the connection parameters provided on db creation. In this case:
 
 ``` title="my_project/app/.env"
+AWS_REGION=eu-west-2
 DB_NAME=_3ba201e349a11daf
 DB_USER=qpp3pzqb
 DB_PASSWORD=LN6jnHfhRJTBD6ia
 ```
 
-4. (Optional) Set the desired project name that your resources will be named after by changing the `IASQL_PROJECT_NAME` in the `my_project/app/app/settings.py`. If the name is not changed, `quickstart` will be used.
+4. Once created, `source` the file to make the environment variables available:
+
+```bash
+source .env
+```
+
+5. (Optional) Set the desired project name that your resources will be named after by changing the `IASQL_PROJECT_NAME` in the `my_project/app/app/settings.py`. If the name is not changed, `quickstart` will be used.
 
 :::note
 
@@ -131,7 +139,7 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 
 :::
 
-5. Per the [Djando database documentation](https://docs.djangoproject.com/en/4.0/ref/databases/#postgresql-connection-settings-1), to connect to a new database you have to update the `DATABASES` in the `my_project/app/app/settings.py` file. This is already configure in the example project.
+6. Per the [Djando database documentation](https://docs.djangoproject.com/en/4.0/ref/databases/#postgresql-connection-settings-1), to connect to a new database you have to update the `DATABASES` in the `my_project/app/app/settings.py` file. This is already configure in the example project.
 
 ```python title="my_project/app/app/settings.py"
 DATABASES = {
@@ -147,7 +155,9 @@ DATABASES = {
 }
 ```
 
-6. The second migration correspond to the Django models instrospected from the modules that have been installed in the database. To introspect the schema from your database run the following command. More information [here](https://docs.djangoproject.com/en/4.0/howto/legacy-databases/).
+### If you are using the template example go to step 9. The following steps explains how to instrospect an existing DB in Django.
+
+7. The second migration correspond to the Django models instrospected from the modules that have been installed in the database. To introspect the schema from your database run the following command. More information [here](https://docs.djangoproject.com/en/4.0/howto/legacy-databases/).
 
 ```bash
 python manage.py inspectdb --database=infra > infra/models.py
@@ -166,7 +176,7 @@ In our case you will have to modify the `my_project/app/infra/models.py` file as
 
 :::
 
-7. After instrospecting the db you will need to generate the migration so you can have the `my_project/app/infra/migrations/0002_inspectdb.py` file.
+8. After instrospecting the db you will need to generate the migration so you can have the `my_project/app/infra/migrations/0002_inspectdb.py` file.
 
 ```
 python manage.py makemigrations --name inspectdb infra
@@ -174,12 +184,12 @@ python manage.py makemigrations --name inspectdb infra
 
 :::caution
 
-If you install or uninstall IaSQL [modules](/module) the database schema will change and you will need to run steps 6 and 7 to
+If you install or uninstall IaSQL [modules](/module) the database schema will change and you will need to run steps 7 and 8 to
 introspect the correct schema once again.
 
 :::
 
-8. Now you can use IaSQL models to create your resources. Run the existing migrations with:
+9. Now you can use IaSQL models to create your resources. Run the existing migrations with:
 
 ```bash
  python manage.py migrate --database infra infra
@@ -198,7 +208,7 @@ operations = [
 If the function call is successful, it will return a list of dicts with each cloud resource that has been created, deleted or updated.
 
 ```python
-[{'action': 'create', 'table_name': 'public_repository', 'id': 14, 'description': 'quickstart-repository-eu-west-1'}, {'action': 'create', 'table_name': 'cluster', 'id': 12, 'description': '12'}, {'action': 'create', 'table_name': 'task_definition', 'id': 10, 'description': '10'}, {'action': 'create', 'table_name': 'service', 'id': 10, 'description': '10'}, {'action': 'create', 'table_name': 'listener', 'id': 11, 'description': '11'}, {'action': 'create', 'table_name': 'load_balancer', 'id': 11, 'description': '11'}, {'action': 'create', 'table_name': 'target_group', 'id': 17, 'description': '17'}, {'action': 'create', 'table_name': 'security_group', 'id': 22, 'description': '22'}, {'action': 'create', 'table_name': 'security_group_rule', 'id': 34, 'description': '34'}, {'action': 'create', 'table_name': 'security_group_rule', 'id': 35, 'description': '35'}, {'action': 'delete', 'table_name': 'security_group_rule', 'id': None, 'description': 'sgr-0473733363d6bcfe7'}]
+[{'action': 'create', 'table_name': 'public_repository', 'id': 1, 'description': 'quickstart-repository-eu-west-2'}, {'action': 'create', 'table_name': 'cluster', 'id': 1, 'description': '1'}, {'action': 'create', 'table_name': 'task_definition', 'id': 1, 'description': '1'}, {'action': 'create', 'table_name': 'service', 'id': 1, 'description': '1'}, {'action': 'create', 'table_name': 'listener', 'id': 1, 'description': '1'}, {'action': 'create', 'table_name': 'load_balancer', 'id': 1, 'description': '1'}, {'action': 'create', 'table_name': 'target_group', 'id': 1, 'description': '1'}, {'action': 'create', 'table_name': 'security_group', 'id': 2, 'description': '2'}, {'action': 'create', 'table_name': 'security_group_rule', 'id': 3, 'description': '3'}, {'action': 'create', 'table_name': 'security_group_rule', 'id': 4, 'description': '4'}, {'action': 'delete', 'table_name': 'security_group_rule', 'id': None, 'description': 'sgr-03aa8f1fae37d1edc'}]
 ```
 
 ## Login, build and push your code to the container registry
@@ -207,7 +217,7 @@ If the function call is successful, it will return a list of dicts with each clo
 ```bash
 QUICKSTART_ECR_URI=$(psql -At postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c "
 SELECT repository_uri
-FROM aws_public_repository
+FROM public_repository
 WHERE repository_name = '<project-name>-repository-<aws-region>';")
 ```
 
@@ -226,7 +236,7 @@ The region *must* be `us-east-1` for public repositories.
 3. Build your image locally
 
 ```bash
-docker build -t <project-name>-repository app
+docker build -t <project-name>-repository .
 ```
 
 4. Tag your image
@@ -245,7 +255,7 @@ docker push ${QUICKSTART_ECR_URI}:latest
 ```bash
 QUICKSTART_LB_DNS=$(psql -At postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c "
 SELECT dns_name
-FROM aws_load_balancer
+FROM load_balancer
 WHERE load_balancer_name = '<project-name>-load-balancer';")
 ```
 
