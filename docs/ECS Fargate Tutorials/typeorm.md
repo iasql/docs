@@ -67,10 +67,10 @@ SELECT * from iasql_install(
 );
 ```
 
-If the function call is successful, it will return a virtual table with a record for each new table in your database under `table_name` and the number of existing resources or records imported from the account under `record_count`.
+If the function call is successful, it will return a virtual table with a record for each new table in your database under `created_table_name` and the number of existing resources or records imported from the account under `record_count`.
 
 ```sql
-       module_name        |          table_name           | record_count 
+       module_name        |      created_table_name       | record_count
 --------------------------+-------------------------------+--------------
  aws_cloudwatch@0.0.1     | log_group                     |            0
  aws_ecr@0.0.1            | public_repository             |            0
