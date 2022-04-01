@@ -58,12 +58,12 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 ```sql title="my_project/migrations/V1__install.sql"
 SELECT * from iasql_install(
-   'aws_cloudwatch@0.0.1',
-   'aws_ecr@0.0.1',
-   'aws_ecs_fargate@0.0.1',
-   'aws_elb@0.0.1',
-   'aws_security_group@0.0.1',
-   'aws_vpc@0.0.1'
+   'aws_cloudwatch',
+   'aws_ecr',
+   'aws_ecs_fargate',
+   'aws_elb',
+   'aws_security_group',
+   'aws_vpc'
 );
 ```
 
@@ -225,7 +225,13 @@ WHERE load_balancer_name = '<project-name>-load-balancer';")
 curl ${QUICKSTART_LB_DNS}:8088/health
 ```
 
-## Clean up the created cloud resources
+## Delete managed cloud resources
+
+:::warning
+
+If you did not create a new account this section will delete **all** records managed by IaSQL, including the ones that previously existed in the account under any of the used modules. Run `SELECT * FROM iasql_plan_apply()` after `SELECT delete_all_records();` and before `SELECT iasql_apply();` to get a preview of what would get deleted. To undo `SELECT delete_all_records();`, simply run `SELECT iasql_sync();` which will synchronize the database with the cloud's state.
+
+:::
 
 1. Delete all the docker images in the repository
 
