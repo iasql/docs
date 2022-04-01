@@ -100,6 +100,7 @@ If the function call is successful, it will return a virtual table with a record
 git clone git@github.com:iasql/ecs-fargate-examples.git my_project
 cd my_project
 git filter-branch --subdirectory-filter django
+cd app
 ```
 
 2. (Optional) Create and activate a virtual environment to install python dependencies
@@ -112,7 +113,6 @@ source <env-name>/bin/activate
 3. Install the project dependencies under the `my_project/app` folder
 
 ```bash
-cd app
 pip install -r requirements.txt
 ```
 
@@ -125,13 +125,7 @@ DB_USER=qpp3pzqb
 DB_PASSWORD=LN6jnHfhRJTBD6ia
 ```
 
-4. Once created, `source` the file to make the environment variables available:
-
-```bash
-source .env
-```
-
-5. (Optional) Set the desired project name that your resources will be named after by changing the `IASQL_PROJECT_NAME` in the `my_project/app/app/settings.py`. If the name is not changed, `quickstart` will be used.
+4. (Optional) Set the desired project name that your resources will be named after by changing the `IASQL_PROJECT_NAME` in the `my_project/app/app/settings.py`. If the name is not changed, `quickstart` will be used.
 
 :::note
 
@@ -139,16 +133,16 @@ The `project-name` can only contain alphanumeric characters and hyphens(-) becau
 
 :::
 
-6. Per the [Djando database documentation](https://docs.djangoproject.com/en/4.0/ref/databases/#postgresql-connection-settings-1), to connect to a new database you have to update the `DATABASES` in the `my_project/app/app/settings.py` file. This is already configure in the example project.
+5. Per the [Djando database documentation](https://docs.djangoproject.com/en/4.0/ref/databases/#postgresql-connection-settings-1), to connect to a new database you have to update the `DATABASES` in the `my_project/app/app/settings.py` file. This is already configure in the example project.
 
 ```python title="my_project/app/app/settings.py"
 DATABASES = {
     ...
     'infra': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': environ['DB_NAME'],
-        'USER': environ['DB_USER'],
-        'PASSWORD': environ['DB_PASSWORD'],
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
         'HOST': 'db.iasql.com',
         'PORT': '5432',
     }
@@ -157,7 +151,7 @@ DATABASES = {
 
 ### If you are using the template example go to step 9. The following steps explains how to instrospect an existing DB in Django.
 
-7. The second migration correspond to the Django models instrospected from the modules that have been installed in the database. To introspect the schema from your database run the following command. More information [here](https://docs.djangoproject.com/en/4.0/howto/legacy-databases/).
+6. The second migration correspond to the Django models instrospected from the modules that have been installed in the database. To introspect the schema from your database run the following command. More information [here](https://docs.djangoproject.com/en/4.0/howto/legacy-databases/).
 
 ```bash
 python manage.py inspectdb --database=infra > infra/models.py
@@ -176,7 +170,7 @@ In our case you will have to modify the `my_project/app/infra/models.py` file as
 
 :::
 
-8. After instrospecting the db you will need to generate the migration so you can have the `my_project/app/infra/migrations/0002_inspectdb.py` file.
+7. After instrospecting the db you will need to generate the migration so you can have the `my_project/app/infra/migrations/0002_inspectdb.py` file.
 
 ```
 python manage.py makemigrations --name inspectdb infra
@@ -184,12 +178,12 @@ python manage.py makemigrations --name inspectdb infra
 
 :::caution
 
-If you install or uninstall IaSQL [modules](/module) the database schema will change and you will need to run steps 7 and 8 to
+If you install or uninstall IaSQL [modules](/module) the database schema will change and you will need to run steps 6 and 7 to
 introspect the correct schema once again.
 
 :::
 
-9. Now you can use IaSQL models to create your resources. Run the existing migrations with:
+8. Now you can use IaSQL models to create your resources. Run the existing migrations with:
 
 ```bash
  python manage.py migrate --database infra infra
@@ -265,14 +259,21 @@ WHERE load_balancer_name = '<project-name>-load-balancer';")
 curl ${QUICKSTART_LB_DNS}:8088/health
 ```
 
-## Clean up the created cloud resources
+## Delete managed cloud resources
+
+:::warning
+
+If you did not create a new account this section will delete **all** records managed by IaSQL, including the ones that previously existed in the account under any of the used modules. Run `SELECT * FROM iasql_plan_apply()` after `SELECT delete_all_records();` and before `SELECT iasql_apply();` to get a preview of what would get deleted. To undo `SELECT delete_all_records();`, simply run `SELECT iasql_sync();` which will synchronize the database with the cloud's state.
+
+:::
 
 1. Delete all the docker images in the repository
 
 ```bash
 aws ecr-public batch-delete-image \
-      --repository-name <project-name>-repository \
+      --repository-name <project-name>-repository-<aws-region> \
       --profile <profile> \
+      --region us-east-1 \
       --image-ids imageTag=latest
 ```
 
