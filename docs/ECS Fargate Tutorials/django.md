@@ -58,12 +58,12 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 ```sql title="psql postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c"
 SELECT * from iasql_install(
-   'aws_cloudwatch@0.0.1',
-   'aws_ecr@0.0.1',
-   'aws_ecs_fargate@0.0.1',
-   'aws_elb@0.0.1',
-   'aws_security_group@0.0.1',
-   'aws_vpc@0.0.1'
+   'aws_cloudwatch',
+   'aws_ecr',
+   'aws_ecs_fargate',
+   'aws_elb',
+   'aws_security_group',
+   'aws_vpc'
 );
 ```
 
