@@ -168,7 +168,9 @@ In our case you will have to modify the `my_project/app/infra/models.py` file as
 4. Replace in the `Service` class the `subnets` property with `subnets = ArrayField(models.TextField())`
 5. Add a default `False` value for the `Service` class `force_new_deployment` property (`force_new_deployment = models.BooleanField(default=False)`).
 6. Replace in the `Role` class the `attached_policies_arns` property with `attached_policies_arns = ArrayField(models.TextField())`
-7. Add `related_name='module'` to `dependency` property in `IasqlDependencies` class. (`dependency = models.ForeignKey('IasqlModule', models.DO_NOTHING, db_column='dependency', related_name='module')`)
+7. Add `related_name` argument to the definition for `IasqlDependencies.dependency`. (`dependency = models.ForeignKey('IasqlModule', models.DO_NOTHING, db_column='dependency', related_name='module')`)
+8. Add `related_name` argument to the definition for `TaskDefinition.execution_role_name`. (`execution_role_name = models.ForeignKey(Role, models.DO_NOTHING, db_column='execution_role_name', blank=True, null=True, related_name='execution_role_name')`)
+9. Add `related_name` argument to the definition for `TaskDefinition.task_role_name`. (`task_role_name = models.ForeignKey(Role, models.DO_NOTHING, db_column='task_role_name', blank=True, null=True, related_name='task_role_name')`)
 
 :::
 
