@@ -163,10 +163,12 @@ After running the `inspectdb` command you will need to tweak the models Django g
 In our case you will have to modify the `my_project/app/infra/models.py` file as follow:
 
 1. Replace `CharField` with `TextField`
-2. Remove all `max_length=-1`
+2. Remove all `max_length=-1`. Helpful regex for a replacement: `[\s,]*max_length=-1[,\s]*`
 3. Add the following import `from django.contrib.postgres.fields import ArrayField`
 4. Replace in the `Service` class the `subnets` property with `subnets = ArrayField(models.TextField())`
 5. Add a default `False` value for the `Service` class `force_new_deployment` property (`force_new_deployment = models.BooleanField(default=False)`).
+6. Replace in the `Role` class the `attached_policies_arns` property with `attached_policies_arns = ArrayField(models.TextField())`
+7. Add `related_name='module'` to `dependency` property in `IasqlDependencies` class. (`dependency = models.ForeignKey('IasqlModule', models.DO_NOTHING, db_column='dependency', related_name='module')`)
 
 :::
 
