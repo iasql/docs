@@ -96,62 +96,62 @@ If the function call is successful, it will return a virtual table with a record
 
 1. Get a local copy of the [ECS Fargate examples repository](https://github.com/iasql/ecs-fargate-examples)
 
-```bash
-git clone git@github.com:iasql/ecs-fargate-examples.git my_project
-cd my_project
-git filter-branch --subdirectory-filter django
-cd app
-```
+    ```bash
+    git clone git@github.com:iasql/ecs-fargate-examples.git my_project
+    cd my_project
+    git filter-branch --subdirectory-filter django
+    cd app
+    ```
 
 2. (Optional) Create and activate a virtual environment to install python dependencies
 
-```bash
-python -m venv <env-name>
-source <env-name>/bin/activate
-```
+    ```bash
+    python -m venv <env-name>
+    source <env-name>/bin/activate
+    ```
 
 3. Install the project dependencies under the `my_project/app` folder
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-3. Create a `.env` file with the connection parameters provided on db creation. In this case:
+4. Create a `.env` file with the connection parameters provided on db creation. In this case:
 
-``` title="my_project/app/.env"
-AWS_REGION=eu-west-2
-DB_NAME=_3ba201e349a11daf
-DB_USER=qpp3pzqb
-DB_PASSWORD=LN6jnHfhRJTBD6ia
-```
+    ``` title="my_project/app/.env"
+    AWS_REGION=eu-west-2
+    DB_NAME=_3ba201e349a11daf
+    DB_USER=qpp3pzqb
+    DB_PASSWORD=LN6jnHfhRJTBD6ia
+    ```
 
-4. (Optional) Set the desired project name that your resources will be named after by changing the `IASQL_PROJECT_NAME` in the `my_project/app/app/settings.py`. If the name is not changed, `quickstart` will be used.
+5. (Optional) Set the desired project name that your resources will be named after by changing the `IASQL_PROJECT_NAME` in the `my_project/app/app/settings.py`. If the name is not changed, `quickstart` will be used.
 
-:::note
+    :::note
 
-The `project-name` can only contain alphanumeric characters and hyphens(-) because it will be used to name the load balancer
+    The `project-name` can only contain alphanumeric characters and hyphens(-) because it will be used to name the load balancer
 
-:::
+    :::
 
-5. Per the [Djando database documentation](https://docs.djangoproject.com/en/4.0/ref/databases/#postgresql-connection-settings-1), to connect to a new database you have to update the `DATABASES` in the `my_project/app/app/settings.py` file. This is already configure in the example project.
+6. Per the [Djando database documentation](https://docs.djangoproject.com/en/4.0/ref/databases/#postgresql-connection-settings-1), to connect to a new database you have to update the `DATABASES` in the `my_project/app/app/settings.py` file. This is already configure in the example project.
 
-```python title="my_project/app/app/settings.py"
-DATABASES = {
-    ...
-    'infra': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': 'db.iasql.com',
-        'PORT': '5432',
+    ```python title="my_project/app/app/settings.py"
+    DATABASES = {
+        ...
+        'infra': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env('DB_NAME'),
+            'USER': env('DB_USER'),
+            'PASSWORD': env('DB_PASSWORD'),
+            'HOST': 'db.iasql.com',
+            'PORT': '5432',
+        }
     }
-}
-```
+    ```
 
 ### If you are using the template example go to step 9. The following steps explains how to instrospect an existing DB in Django.
 
-6. The second migration correspond to the Django models instrospected from the modules that have been installed in the database. To introspect the schema from your database run the following command. More information [here](https://docs.djangoproject.com/en/4.0/howto/legacy-databases/).
+7. The second migration correspond to the Django models instrospected from the modules that have been installed in the database. To introspect the schema from your database run the following command. More information [here](https://docs.djangoproject.com/en/4.0/howto/legacy-databases/).
 
 ```bash
 python manage.py inspectdb --database=infra > infra/models.py
@@ -170,34 +170,34 @@ In our case you will have to modify the `my_project/app/infra/models.py` file as
 
 :::
 
-7. After instrospecting the db you will need to generate the migration so you can have the `my_project/app/infra/migrations/0002_inspectdb.py` file.
+8. After instrospecting the db you will need to generate the migration so you can have the `my_project/app/infra/migrations/0002_inspectdb.py` file.
 
-```
-python manage.py makemigrations --name inspectdb infra
-```
+    ```bash
+    python manage.py makemigrations --name inspectdb infra
+    ```
 
-:::caution
+    :::caution
 
-If you install or uninstall IaSQL [modules](/module) the database schema will change and you will need to run steps 6 and 7 to
-introspect the correct schema once again.
+    If you install or uninstall IaSQL [modules](/module) the database schema will change and you will need to run steps 7 and 8 to
+    introspect the correct schema once again.
 
-:::
+    :::
 
-8. Now you can use IaSQL models to create your resources. Run the existing migrations with:
+9. Now you can use IaSQL models to create your resources. Run the existing migrations with:
 
-```bash
- python manage.py migrate --database infra infra
-```
+    ```bash
+    python manage.py migrate --database infra infra
+    ```
 
-The operations of the `my_project/app/infra/migrations/0003_initial.py` migration will apply the changes described in the hosted db to your cloud account which will take a few minutes waiting for AWS
+    The operations of the `my_project/app/infra/migrations/0003_initial.py` migration will apply the changes described in the hosted db to your cloud account which will take a few minutes waiting for AWS
 
-```python title="my_project/app/infra/migrations/0003_initial.py"
-...
-operations = [
-    migrations.RunPython(code=quickstart_up, reverse_code=apply),
-    migrations.RunPython(code=apply, reverse_code=quickstart_down),
-]
-```
+    ```python title="my_project/app/infra/migrations/0003_initial.py"
+    ...
+    operations = [
+        migrations.RunPython(code=quickstart_up, reverse_code=apply),
+        migrations.RunPython(code=apply, reverse_code=quickstart_down),
+    ]
+    ```
 
 If the function call is successful, it will return a list of dicts with each cloud resource that has been created, deleted or updated.
 
@@ -208,56 +208,52 @@ If the function call is successful, it will return a list of dicts with each clo
 ## Login, build and push your code to the container registry
 
 1. Grab your new `ECR URI` from the hosted DB
-```bash
-QUICKSTART_ECR_URI=$(psql -At postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c "
-SELECT repository_uri
-FROM public_repository
-WHERE repository_name = '<project-name>-repository-<aws-region>';")
-```
+
+    ```bash
+    QUICKSTART_ECR_URI=$(psql -At postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c "
+    SELECT repository_uri
+    FROM repository
+    WHERE repository_name = '<project-name>-repository';")
+    ```
 
 2. Login to AWS ECR using the AWS CLI. Run the following command and using the correct `<ECR-URI>` and AWS `<profile>`
 
-```bash
-aws ecr-public get-login-password --region us-east-1 --profile <profile> | docker login --username AWS --password-stdin ${QUICKSTART_ECR_URI}
-```
-
-:::note
-
-The region *must* be `us-east-1` for public repositories.
-
-:::
+    ```bash
+    aws ecr get-login-password --region ${AWS_REGION} --profile <profile> | docker login --username AWS --password-stdin ${QUICKSTART_ECR_URI}
+    ```
 
 3. Build your image locally
 
-```bash
-docker build -t <project-name>-repository .
-```
+    ```bash
+    docker build -t <project-name>-repository .
+    ```
 
 4. Tag your image
 
-```bash
-docker tag <project-name>-repository:latest ${QUICKSTART_ECR_URI}:latest
-```
+    ```bash
+    docker tag <project-name>-repository:latest ${QUICKSTART_ECR_URI}:latest
+    ```
 
 5. Push your image
 
-```bash
-docker push ${QUICKSTART_ECR_URI}:latest
-```
+    ```bash
+    docker push ${QUICKSTART_ECR_URI}:latest
+    ```
 
 6. Grab your load balancer DNS and access your service!
-```bash
-QUICKSTART_LB_DNS=$(psql -At postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c "
-SELECT dns_name
-FROM load_balancer
-WHERE load_balancer_name = '<project-name>-load-balancer';")
-```
+
+    ```bash
+    QUICKSTART_LB_DNS=$(psql -At postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c "
+    SELECT dns_name
+    FROM load_balancer
+    WHERE load_balancer_name = '<project-name>-load-balancer';")
+    ```
 
 7. Connect to your service!
 
-```
-curl ${QUICKSTART_LB_DNS}:8088/health
-```
+    ```bash
+    curl ${QUICKSTART_LB_DNS}:8088/health
+    ```
 
 ## Delete managed cloud resources
 
@@ -269,25 +265,25 @@ If you did not create a new account this section will delete **all** records man
 
 1. Delete all the docker images in the repository
 
-```bash
-aws ecr-public batch-delete-image \
-      --repository-name <project-name>-repository-<aws-region> \
-      --profile <profile> \
-      --region us-east-1 \
-      --image-ids imageTag=latest
-```
+    ```bash
+    aws ecr batch-delete-image \
+        --repository-name <project-name>-repository \
+        --profile <profile> \
+        --region ${AWS_REGION} \
+        --image-ids imageTag=latest
+    ```
 
 2. Delete all iasql records invoking the void `delete_all_records` function:
 
-```sql title="psql postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c"
-SELECT delete_all_records();
-```
+    ```sql title="psql postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c"
+    SELECT delete_all_records();
+    ```
 
 3. Apply the changes described in the hosted db to your cloud account
 
-```sql title="psql postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c"
-SELECT * from iasql_apply();
-```
+    ```sql title="psql postgres://qpp3pzqb:LN6jnHfhRJTBD6ia@db.iasql.com/_3ba201e349a11daf -c"
+    SELECT * from iasql_apply();
+    ```
 
 If the function call is successful, it will return a virtual table with a record for each cloud resource that has been created, deleted or updated.
 
