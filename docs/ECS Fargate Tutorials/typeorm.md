@@ -5,7 +5,7 @@ slug: '/typeorm'
 
 # IaSQL on TypeORM (SQL ORM)
 
-In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
+In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using Fargate ECS, IAM, ECR and ELB. The container image will be hosted as a private repository in ECR and deployed to ECS using Fargate.
 
 :::tip
 
@@ -58,6 +58,7 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 ```sql title="my_project/infra/src/migration/1646683871211-Install.js"
 SELECT * from iasql_install(
+   'aws_iam',
    'aws_cloudwatch',
    'aws_ecr',
    'aws_ecs_fargate',
@@ -73,6 +74,7 @@ If the function call is successful, it will return a virtual table with a record
        module_name        |      created_table_name       | record_count
 --------------------------+-------------------------------+--------------
  aws_cloudwatch@0.0.1     | log_group                     |            0
+ aws_iam@0.0.1            | role                          |            0
  aws_ecr@0.0.1            | public_repository             |            0
  aws_ecr@0.0.1            | repository                    |            1
  aws_ecr@0.0.1            | repository_policy             |            0
@@ -178,21 +180,15 @@ If the function call is successful, it will return a virtual table with a record
 ```bash
 QUICKSTART_ECR_URI=$(psql -At postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4 -c "
 SELECT repository_uri
-FROM public_repository
-WHERE repository_name = '<project-name>-repository-us-east-1';")
+FROM repository
+WHERE repository_name = '<project-name>-repository';")
 ```
 
 2. Login to AWS ECR using the AWS CLI. Run the following command and using the correct `<ECR-URI>` and AWS `<profile>`
 
 ```bash
-aws ecr-public get-login-password --region us-east-1 --profile <profile> | docker login --username AWS --password-stdin ${QUICKSTART_ECR_URI}
+aws ecr get-login-password --region ${AWS_REGION} --profile <profile> | docker login --username AWS --password-stdin ${QUICKSTART_ECR_URI}
 ```
-
-:::note
-
-The region *must* be `us-east-1` for public repositories.
-
-:::
 
 3. Build your image locally
 
@@ -231,7 +227,7 @@ curl ${QUICKSTART_LB_DNS}:8088/health
 1. Delete all the docker images in the repository
 
 ```bash
-aws ecr-public batch-delete-image \
+aws ecr batch-delete-image \
       --repository-name <project-name>-repository \
       --profile <profile> \
       --image-ids imageTag=latest
@@ -265,5 +261,6 @@ If the function call is successful, it will return a virtual table with a record
  delete | security_group      | [NULL] | sg-e0df1095
  delete | security_group_rule | [NULL] | sgr-06aa0915b15fd23a9
  delete | security_group_rule | [NULL] | sgr-02e2096ac9e77a5bf
+ delete | role                | [NULL] | ecsTaskExecRole
 
 ```
