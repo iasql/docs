@@ -128,7 +128,7 @@ flyway.validateMigrationNaming=true
 # Flyway supports placeholder replacement with configurable prefixes and suffixes.
 # By default it looks for Ant-style placeholders like ${myplaceholder} in SQL syntax
 flyway.placeholders.projectName=quickstart
-flyway.placeholders.taskDefResources=2vCPU-8GB
+flyway.placeholders.taskDefResources=vCPU2-8GB
 flyway.placeholders.imageTag=latest
 flyway.placeholders.containerMemReservation=8192
 flyway.placeholders.port=8088
