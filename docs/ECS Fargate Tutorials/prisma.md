@@ -132,6 +132,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+generator client {
+  provider = "prisma-client-js"
+}
 ```
 
 6. Pull, or introspect, the schema from your database which will autopopulate the rest of the `schema.prisma` file
