@@ -3,15 +3,11 @@ sidebar_position: 4
 slug: '/django'
 ---
 
-# IaSQL on Django (Python framework)
+# IaSQL on Django (Python)
 
 In this tutorial we will run [Django SQL migrations](https://docs.djangoproject.com/en/4.0/topics/migrations/) on top of IaSQL to deploy a HTTP server within a docker container on your AWS account using ECS, ECR and ELB. The container image will be hosted as a public repository in ECR and deployed to ECS using Fargate.
 
-:::tip
-
-All the code from this tutorial can be found in this [repository folder](https://github.com/iasql/ecs-fargate-examples/tree/main/django) which you can use to create a new Github repository for your IaSQL project.
-
-:::
+The code for this tutorial lives in this part of the [repository](https://github.com/iasql/ecs-fargate-examples/blob/main/django/app/infra/migrations/0003_initial.py)
 
 ## Start managing an AWS account with a hosted IaSQL db
 
