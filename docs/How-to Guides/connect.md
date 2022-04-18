@@ -1,9 +1,9 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 slug: '/connect'
 ---
 
-# Connecting to a database
+# Connecting to PostgreSQL
 
 The required information to connect to a PostgreSQL IaSQL database will provided when you connect an AWS account when provisioning the database. IaSQL does not store your database password so it will only be displayed when the database is provisioned. If you lose the password, you can recreate the database by disconnecting and connecting your account again using the same region and AWS credentials.
 

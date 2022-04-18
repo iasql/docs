@@ -11,6 +11,9 @@ The code for this tutorial can be found in this part of the [repository](https:/
 
 ## Start managing an AWS account with a hosted IaSQL db
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 <Tabs>
   <TabItem value="Option 1: Connect an account directly" label="Option 1: Connect an account directly" default>
 
