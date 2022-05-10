@@ -74,6 +74,10 @@ const config = process.env.IASQL_ENV === 'local' ? Object.assign(baseConfig, loc
             label: 'Discord',
           },
           {
+            type: 'docsVersionDropdown',
+            position: 'right'
+          },
+          {
             href: 'https://github.com/iasql/iasql-engine',
             position: 'right',
             className: 'header-github-link',
