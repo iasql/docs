@@ -11,7 +11,7 @@ $ yarn
 ### Local Development
 
 ```
-$ yarn start
+$ yarn start:local
 ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
@@ -24,10 +24,14 @@ $ yarn build
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
+### Version
+
+```
+$ yarn run docusaurus docs:version $VERSION
+```
+
+This command generates a copy of the latest docs under `versioned_docs` with the provided $VERSION
+
 ### Deployment
 
-```
-$ GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Use the github actions `deploy` job
