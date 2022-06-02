@@ -11,39 +11,21 @@ The code for this tutorial can be found in this part of the [repository](https:/
 
 ## Start managing an AWS account with a hosted IaSQL db
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+First, make sure you have an [IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html) in AWS or create one with **Programmatic access** through the [console/UI](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) or [CLI](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_cliwpsapi). Ensure that the IAM role has sufficient permissions to deploy and manage all your infrastructure resources.
 
-<Tabs>
-  <TabItem value="Option 1: Connect an account directly" label="Option 1: Connect an account directly" default>
+There are two parts to each [access key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys), which you’ll see in the IAM console/CLI after you create it, an id and a secret. Input these in the connect account modal:
 
-  Connecting an AWS account directly will redirect you to the AWS console to create a new [IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html) for IaSQL with its respective credentials. Please do not modify the fields in the cloud formation template or the account will be misconfigured.
+<img width={440} src={require('@site/static/screenshots/connect-manual.png').default} />
 
-  <img width={440} src={require('@site/static/screenshots/connect-direct.png').default} />
+If you use the [AWS CLI](https://docs.aws.amazon.com/cli/), you can look at the [credentials configured locally](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html). In macOS and Linux this is as simple as:
 
-  You will be able to see your PostgreSQL connection information when the cloud formation stack creation completes.
-
-  </TabItem>
-  <TabItem value="Option 2: Provide the credentials manually" label="Option 2: Provide the credentials manually">
-
-   First, make sure you have an [IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html) in AWS or create one with **Programmatic access** through the [console/UI](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) or [CLI](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_cliwpsapi). Ensure that the IAM role has sufficient permissions to deploy and manage all your infrastructure resources.
-
-   There are two parts to each [access key](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys), which you’ll see in the IAM console/CLI after you create it, an id and a secret. Input these in the connect account modal:
-
-   <img width={440} src={require('@site/static/screenshots/connect-manual.png').default} />
-
-  If you use the [AWS CLI](https://docs.aws.amazon.com/cli/), you can look at the [credentials configured locally](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html). In macOS and Linux this is as simple as:
-
-  ```bash
-  $ cat ~/.aws/credentials
-  [default]
-  aws_access_key_id = <YOUR_ACCESS_KEY_ID>
-  aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
-  ```
-  You will be able to see your PostgreSQL connection information when you press Connect.
-
-  </TabItem>
-</Tabs>
+```bash
+$ cat ~/.aws/credentials
+[default]
+aws_access_key_id = <YOUR_ACCESS_KEY_ID>
+aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
+```
+You will be able to see your PostgreSQL connection information when you press Connect.
 
 <img width={440} src={require('@site/static/screenshots/credentials.png').default} />
 

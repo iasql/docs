@@ -1,9 +1,9 @@
 ---
-sidebar_position: 6
+sidebar_position: 3
 slug: '/ami'
 ---
 
-# Get latest AMI ID
+# Get latest EC2 AMI ID
 
 Invoke the AWS [SSM](https://docs.aws.amazon.com/cli/latest/reference/ssm/index.html) via the [CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to get the latest AMI ids
 
