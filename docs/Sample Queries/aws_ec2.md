@@ -36,7 +36,7 @@ COMMIT;
 Apply changes
 
 ```sql
-SELECT iasql_apply('aws_ec2');
+SELECT iasql_apply();
 ```
 
 Query newly created instances. View the table schema [here](https://dbdocs.io/iasql/iasql?table=instance&schema=public&view=table_structure)
