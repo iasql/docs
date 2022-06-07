@@ -62,7 +62,7 @@ UPDATE instance SET ami = 'ami-06cffe063efe892ad' WHERE tags ->> 'name' = 'i-1';
 SELECT iasql_apply();
 ```
 
-## Read-only metadata
+## Read-only instance metadata
 
 Install the AWS EC2 module
 
