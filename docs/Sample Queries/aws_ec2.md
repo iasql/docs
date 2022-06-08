@@ -10,7 +10,7 @@ slug: '/ec2'
 Install the AWS EC2 module
 
 ```sql
-SELECT iasql_install('aws_ec2');
+SELECT * FROM iasql_install('aws_ec2');
 ```
 
 Create two new EC2 instances associated with the `default` security group within a transaction. A instance `name` tag is required. `ami-0892d3c7ee96c0bf7` is the AMI ID for Ubuntu in `us-west-2`. Follow this [guide](/ami) to get the latest AMI ID for a given AMI image and AWS region.
@@ -36,7 +36,7 @@ COMMIT;
 Apply changes
 
 ```sql
-SELECT iasql_apply();
+SELECT * FROM iasql_apply();
 ```
 
 Query newly created instances. View the table schema [here](https://dbdocs.io/iasql/iasql?table=instance&schema=public&view=table_structure)
@@ -59,7 +59,7 @@ Change the AWS Linux AMI in `us-west-2` for the previously created `i-1` instanc
 
 ```sql
 UPDATE instance SET ami = 'ami-06cffe063efe892ad' WHERE tags ->> 'name' = 'i-1';
-SELECT iasql_apply();
+SELECT * FROM iasql_apply();
 ```
 
 ## Read-only instance metadata
@@ -67,7 +67,7 @@ SELECT iasql_apply();
 Install the AWS EC2 module
 
 ```sql
-SELECT iasql_install('aws_ec2_metadata');
+SELECT * FROM iasql_install('aws_ec2_metadata');
 ```
 
 View the metadata for the previously created `i-1` instance. View the table schema [here](https://dbdocs.io/iasql/iasql?table=instance_metadata&schema=public&view=table_structure)
