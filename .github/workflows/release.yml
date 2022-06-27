@@ -5,6 +5,10 @@ on:
   workflow_dispatch:
     version:
       description: 'Docs version to release'
+    inputs:
+      version:
+        required: false
+        description: 'Version to update the docs to'
   repository_dispatch:
     types: [release]
 
