@@ -55,7 +55,7 @@ SELECT COUNT(*)
 FROM instance;
 ```
 
-Change the AWS Linux AMI in `us-west-2` for the previously created `i-1` instance. This will trigger a recreate so the existing instance will be terminated and a new one will be created when `iasql_apply` is called.
+Change the instance to the AWS Linux AMI for the previously created `i-1` instance. This will trigger a recreate so the existing instance will be terminated and a new one will be created when `iasql_apply` is called.
 
 ```sql
 UPDATE instance SET ami = 'resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2' WHERE tags ->> 'name' = 'i-1';
