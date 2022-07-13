@@ -33,6 +33,14 @@ BEGIN;
 COMMIT;
 ```
 
+<!--- https://www.urlencoder.org/ -->
+<button
+  className={"button button--primary button--lg margin-bottom--lg"}
+  onClick={() => window.open('https://app.iasql.com/#/button/Create%20EC2%20Instances/SELECT%20%2A%20FROM%20iasql_install%28%27aws_ec2%27%29%3B%0A%0ABEGIN%3B%0A%20%20INSERT%20INTO%20instance%20%28ami%2C%20instance_type%2C%20tags%29%0A%20%20%20%20VALUES%20%28%27resolve%3Assm%3A%2Faws%2Fservice%2Fcanonical%2Fubuntu%2Fserver%2F20.04%2Fstable%2Fcurrent%2Famd64%2Fhvm%2Febs-gp2%2Fami-id%27%2C%20%27t2.micro%27%2C%20%27%7B%22name%22%3A%22i-1%22%7D%27%29%3B%0A%20%20INSERT%20INTO%20instance_security_groups%20%28instance_id%2C%20security_group_id%29%20SELECT%0A%20%20%20%20%28SELECT%20id%20FROM%20instance%20WHERE%20tags%20-%3E%3E%20%27name%27%20%3D%20%27i-1%27%29%2C%0A%20%20%20%20%28SELECT%20id%20FROM%20security_group%20WHERE%20group_name%3D%27default%27%29%3B%0ACOMMIT%3B%0A%0ABEGIN%3B%0A%20%20INSERT%20INTO%20instance%20%28ami%2C%20instance_type%2C%20tags%29%0A%20%20%20%20VALUES%20%28%27resolve%3Assm%3A%2Faws%2Fservice%2Fcanonical%2Fubuntu%2Fserver%2F20.04%2Fstable%2Fcurrent%2Famd64%2Fhvm%2Febs-gp2%2Fami-id%27%2C%20%27t2.micro%27%2C%20%27%7B%22name%22%3A%22i-2%22%7D%27%29%3B%0A%20%20INSERT%20INTO%20instance_security_groups%20%28instance_id%2C%20security_group_id%29%20SELECT%0A%20%20%20%20%28SELECT%20id%20FROM%20instance%20WHERE%20tags%20-%3E%3E%20%27name%27%20%3D%20%27i-2%27%29%2C%0A%20%20%20%20%28SELECT%20id%20FROM%20security_group%20WHERE%20group_name%3D%27default%27%29%3B%0ACOMMIT%3B%0A%0ASELECT%20%2A%20FROM%20iasql_apply%28%29%3B', '_blank')}
+>
+Run SQL
+</button>
+
 Apply changes
 
 ```sql
