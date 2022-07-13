@@ -33,9 +33,9 @@ Make sure to copy the PostgreSQL connection string as you will not see it again.
 
 ## Add the necessary cloud services to the hosted database
 
-1. Many different clients can be used to [connect](/connect) to a PostgreSQL database. For this tutorial, we'll use the standard `psql` CLI client. If you need to install `psql`, follow the instructions for your corresponding OS [here](https://www.postgresql.org/download/).
+1. Many different clients can be used to [connect](../how-to/connect.md) to a PostgreSQL database. For this tutorial, we'll use the standard `psql` CLI client. If you need to install `psql`, follow the instructions for your corresponding OS [here](https://www.postgresql.org/download/).
 
-2. The first migration calls the `iasql_install` SQL function to install [modules](/module) into the hosted database.
+2. The first migration calls the `iasql_install` SQL function to install [modules](../concepts/module.md) into the hosted database.
 
 ```sql title="psql 'postgres://d0va6ywg:nfdDh#EP4CyzveFr@db.iasql.com/_4b2bb09a59a411e4' -c"
 SELECT * from iasql_install(
@@ -133,7 +133,7 @@ npx prisma generate
 
 :::caution
 
-If you install or uninstall IaSQL [modules](/module) the database schema will change and you will need to run steps 5 through 7 to
+If you install or uninstall IaSQL [modules](../concepts/module.md) the database schema will change and you will need to run steps 5 through 7 to
 introspect the correct schema once again.
 
 :::
