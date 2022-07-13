@@ -13,7 +13,7 @@ Install the AWS EC2 module
 SELECT * FROM iasql_install('aws_ec2');
 ```
 
-Create two new EC2 instances associated with the `default` security group within a transaction. A instance `name` tag is required. `ami-0892d3c7ee96c0bf7` is the AMI ID for Ubuntu in `us-west-2`. Follow this [guide](/ami) to get the latest AMI ID for a given AMI image and AWS region.
+Create two new EC2 instances associated with the `default` security group within a transaction. A instance `name` tag is required. `ami-0892d3c7ee96c0bf7` is the AMI ID for Ubuntu in `us-west-2`. Follow this [guide](../ami) to get the latest AMI ID for a given AMI image and AWS region.
 
 ```sql
 BEGIN;
