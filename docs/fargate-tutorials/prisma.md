@@ -308,6 +308,12 @@ WHERE repository_name = '<project-name>-repository';")
 aws ecr get-login-password --region ${AWS_REGION} --profile <profile> | docker login --username AWS --password-stdin ${QUICKSTART_ECR_URI}
 ```
 
+:::caution
+
+Make sure the [CLI is configured with the same credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html), via environment variables or `~/.aws/credentials`, as the ones provided to IaSQL or this will fail.
+
+:::
+
 3. Build your image locally
 
 ```bash
@@ -342,7 +348,7 @@ curl ${QUICKSTART_LB_DNS}:8088/health
 
 ## Delete managed cloud resources
 
-:::warning
+:::note
 
 If you did not create a new account this section will delete **all** records managed by IaSQL, including the ones that previously existed in the account under any of the used modules. Run `SELECT * FROM iasql_plan_apply()` after `SELECT delete_all_records();` and before `SELECT iasql_apply();` to get a preview of what would get deleted. To undo `SELECT delete_all_records();`, simply run `SELECT iasql_sync();` which will synchronize the database with the cloud's state.
 
@@ -357,6 +363,12 @@ aws ecr batch-delete-image \
       --profile <profile> \
       --image-ids imageTag=latest
 ```
+
+:::caution
+
+Make sure the [CLI is configured with the same credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html), via environment variables or `~/.aws/credentials`, as the ones provided to IaSQL or this will fail.
+
+:::
 
 2. Delete all iasql records invoking the void `delete_all_records` function:
 
