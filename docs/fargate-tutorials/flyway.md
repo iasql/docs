@@ -263,6 +263,12 @@ WHERE repository_name = '<project-name>-repository';")
 aws ecr get-login-password --region ${AWS_REGION} --profile <profile> | docker login --username AWS --password-stdin ${QUICKSTART_ECR_URI}
 ```
 
+:::caution
+
+Make sure the [CLI is configured with the same credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html), via environment variables or `~/.aws/credentials`, as the ones provided to IaSQL or this will fail.
+
+:::
+
 3. Build your image locally
 
 ```bash
@@ -312,6 +318,12 @@ aws ecr batch-delete-image \
       --profile <profile> \
       --image-ids imageTag=latest
 ```
+
+:::caution
+
+Make sure the [CLI is configured with the same credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html), via environment variables or `~/.aws/credentials`, as the ones provided to IaSQL or this will fail.
+
+:::
 
 2. Delete all iasql records invoking the void `delete_all_records` function:
 
