@@ -3,6 +3,8 @@ sidebar_position: 1
 slug: '/function'
 ---
 
+<!-- TODO generate this table automatically from the same output as iasql_help -->
+
 # IaSQL PostgreSQL Functions
 
 | name               | signature                          | description                                                           | sample usage                                          |

@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
-slug: '/ec2'
+sidebar_position: 4
+slug: '/aws_ec2'
 ---
 
 # AWS EC2
