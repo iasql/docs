@@ -13,7 +13,7 @@ Install the AWS IAM module
 SELECT * FROM iasql_install('aws_iam');
 ```
 
-An AWS IAM controls the access to the cloud resources that it is associated with via a JSON policy document that is stored in the `role` table. Below we create a role with a policy and apply the change.
+An AWS IAM role controls the access to the cloud resources that it is associated with via a JSON policy document that is stored in the [`role`](https://dbdocs.io/iasql/iasql?table=role&schema=public&view=table_structure) table. Below we create a role with a policy and apply the change.
 
 ```sql
 INSERT INTO role (role_name, assume_role_policy_document)

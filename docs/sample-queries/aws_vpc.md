@@ -7,13 +7,13 @@ slug: '/vpc'
 
 ## Create a VPC and a subnet within it
 
-Install the AWS VPC module
+Install the AWS virtual public cloud (VPC) module
 
 ```sql
 SELECT * FROM iasql_install('aws_vpc');
 ```
 
-Create an isolated virtual public cloud (VPC) in which to create resources. Read more about VPC [here](https://docs.aws.amazon.com/vpc/latest/userguide/configure-your-vpc.html). To create a VPC, specify a range of IPv4 addresses for the VPC in the form of a Classless Inter-Domain Routing (CIDR) block. For example, 10.0.0.0/16. This is the primary CIDR block for your VPC. 
+Create an isolated VPC in which to create resources via the [`vpc`](https://dbdocs.io/iasql/iasql?table=vpc&schema=public&view=table_structure) table. Read more about VPC [here](https://docs.aws.amazon.com/vpc/latest/userguide/configure-your-vpc.html). To create a VPC, specify a range of IPv4 addresses for the VPC in the form of a Classless Inter-Domain Routing (CIDR) block.
 
 ```sql
 INSERT INTO vpc (cidr_block)
