@@ -5,7 +5,7 @@ slug: '/typeorm'
 
 # IaSQL on TypeORM (SQL ORM)
 
-In this tutorial we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using Fargate ECS, IAM, ECR and ELB. The container image will be hosted as a private repository in ECR and deployed to ECS using Fargate.
+In this tutorial, we will run [TypeORM SQL migrations](https://typeorm.io/#/migrations) on top of IaSQL to deploy a Node.js HTTP server within a docker container on your AWS account using Fargate ECS, IAM, ECR and ELB. The container image will be hosted as a private repository in ECR and deployed to ECS using Fargate.
 
 The code for this tutorial can be found in this part of the [repository](https://github.com/iasql/ecs-fargate-examples/blob/main/typeorm/infra/src/migration/1646683871219-Initial.js)
 
