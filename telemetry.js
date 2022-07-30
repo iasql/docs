@@ -1,39 +1,34 @@
 import amplitude from 'amplitude-js';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
-// https://developers.amplitude.com/docs/advanced-settings#cross-domain-tracking-javascript
-amplitude.getInstance().init(amplitudeKey, params.ampUserId, {includeReferrer: true, includeUtm: true, deviceIdFromUrlParam: true});
-amplitude.getInstance().logEvent("DOCS", {
-  route: document.location.pathname,
-});
-const deviceId = amplitude.getInstance().options.deviceId;
-window.onload = function() {
-  // pass device id
-  document.querySelectorAll("[href='https://app.iasql.com']").map(n => n.href = `https://app-staging.iasql.com?amp_device_id=${deviceId}`);
-  document.querySelectorAll("[href='https://blog.iasql.com']").map(n => n.href = `https://blog.iasql.com?amp_device_id=${deviceId}`);
-  document.querySelectorAll("[href='https://iasql.com']").map(n => n.href = `https://iasql.com?amp_device_id=${deviceId}`);
-}
-// Listen on and log changes to href
-// https://stackoverflow.com/questions/3522090/event-when-window-location-href-changes
-let oldHref = document.location.href;
-window.onload = function() {
-  let bodyList = document.querySelector("body")
+const amplitudeKey = '1f380d1286396641d1e9a56f15e80e65';
 
-  let observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      if (oldHref != document.location.href) {
-        oldHref = document.location.href;
-        /* Changed ! your code here */
-        amplitude.getInstance().logEvent("DOCS", {
-          route: document.location.pathname,
-        });
-      }
+export function onRouteDidUpdate({location, previousLocation}) {
+  // Don't execute if we are still on the same page; the lifecycle may be fired
+  // because the hash changes (e.g. when navigating between headings)
+  if (location.pathname !== previousLocation?.pathname) {
+    amplitude.getInstance().logEvent("DOCS", {
+      route: location.pathname,
     });
+  }
+}
+
+// browser only
+if (ExecutionEnvironment.canUseDOM) {
+  // https://developers.amplitude.com/docs/advanced-settings#cross-domain-tracking-javascript
+  amplitude.getInstance().init(amplitudeKey, null, {includeReferrer: true, includeUtm: true, deviceIdFromUrlParam: true});
+  amplitude.getInstance().logEvent("DOCS", {
+    route: document.location.pathname,
   });
-
-  let config = {
-    childList: true,
-    subtree: true
-  };
-
-  observer.observe(bodyList, config);
-};
+  const deviceId = amplitude.getInstance().options.deviceId;
+  window.onload = function() {
+    // pass device id
+    // TODO change back to prod dashboard
+    document.querySelectorAll("[href='https://app.iasql.com']")
+      .forEach(n => n.href = `https://app-staging.iasql.com?amp_device_id=${deviceId}`);
+    document.querySelectorAll("[href='https://blog.iasql.com']")
+      .forEach(n => n.href = `https://blog.iasql.com?amp_device_id=${deviceId}`);
+    document.querySelectorAll("[href='https://iasql.com']")
+      .forEach(n => n.href = `https://iasql.com?amp_device_id=${deviceId}`);
+  }
+}
