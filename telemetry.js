@@ -20,9 +20,9 @@ if (ExecutionEnvironment.canUseDOM) {
   amplitude.getInstance().logEvent("DOCS", {
     route: document.location.pathname,
   });
-  const deviceId = amplitude.getInstance().options.deviceId;
   window.onload = function() {
     // pass device id
+    const deviceId = amplitude.getInstance().options.deviceId;
     // TODO change back to prod dashboard
     document.querySelectorAll("[href='https://app.iasql.com']")
       .forEach(n => n.href = `https://app-staging.iasql.com?amp_device_id=${deviceId}`);
