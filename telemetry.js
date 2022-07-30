@@ -1,14 +1,12 @@
 import amplitude from 'amplitude-js';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
-const amplitudeKey = '1f380d1286396641d1e9a56f15e80e65';
+const amplitudeKey = 'c9d876059e7c9a83e44dcef855e77f48';
 
 function addDeviceId() {
-  // pass device id
   const deviceId = amplitude.getInstance().options.deviceId;
-  // TODO change back to prod dashboard
   document.querySelectorAll("[href='https://app.iasql.com']")
-    .forEach(n => n.href = `https://app-staging.iasql.com?amp_device_id=${deviceId}`);
+    .forEach(n => n.href = `https://app.iasql.com?amp_device_id=${deviceId}`);
   document.querySelectorAll("[href='https://blog.iasql.com']")
     .forEach(n => n.href = `https://blog.iasql.com?amp_device_id=${deviceId}`);
   document.querySelectorAll("[href='https://iasql.com']")
