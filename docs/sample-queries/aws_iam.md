@@ -21,7 +21,6 @@ VALUES ('ecs-assume-role', '{"Version": "2012-10-17", "Statement": [{"Sid": "", 
 
 SELECT * FROM iasql_apply();
 ```
-```
 
 <!--- https://www.urlencoder.org/ -->
 <button
