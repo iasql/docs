@@ -7,7 +7,7 @@ slug: '/vpc'
 
 ## Create a VPC and a subnet within it
 
-Install the AWS virtual public cloud (VPC) module
+Install the AWS virtual private cloud (VPC) module
 
 ```sql
 SELECT * FROM iasql_install('aws_vpc');
