@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkweb=self.webpackChunkweb||[]).push([[7054],{7275:function(n,e,t){t.r(e),t.d(e,{default:function(){return c}});var u=t(7294);function c(){return u.useEffect((function(){window.location.href="https://iasql.com/docs"}),[]),null}}}]);
