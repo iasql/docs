@@ -1,20 +1,12 @@
 const lightCodeTheme = require('prism-react-renderer/themes/nightOwlLight');
 const darkCodeTheme = require('prism-react-renderer/themes/nightOwl');
 
-const prodConfig = {
-  url: 'https://docs.iasql.com',
-};
-const localConfig = {
-  url: 'http://localhost:3000',
-};
-const config = process.env.IASQL_ENV === 'local' ? localConfig : prodConfig;
-
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
   title: 'IaSQL',
   tagline: 'Infrastructure as data in PostgreSQL',
-  url: config.url,
+  url: 'https://docs.iasql.com',
   baseUrl: '/',
   trailingSlash: true,
   onBrokenLinks: 'throw',
@@ -22,12 +14,6 @@ const config = process.env.IASQL_ENV === 'local' ? localConfig : prodConfig;
   favicon: 'img/favicon.png',
   projectName: 'iasql-engine',
   organizationName: 'iasql',
-
-  customFields: config,
-
-  clientModules: [
-    require.resolve('./telemetry.js'),
-  ],
 
   presets: [
     [
@@ -38,12 +24,6 @@ const config = process.env.IASQL_ENV === 'local' ? localConfig : prodConfig;
           routeBasePath: '/',
         },
         blog: false,
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
-        gtag: {
-          trackingID: 'G-J20KBVRLE4',
-        },
       }),
     ],
   ],
@@ -81,10 +61,6 @@ const config = process.env.IASQL_ENV === 'local' ? localConfig : prodConfig;
             label: 'Discord',
           },
           {
-            type: 'docsVersionDropdown',
-            position: 'right'
-          },
-          {
             href: 'https://github.com/iasql/iasql-engine',
             position: 'right',
             className: 'header-github-link',
@@ -107,11 +83,6 @@ const config = process.env.IASQL_ENV === 'local' ? localConfig : prodConfig;
                 label: 'Schema',
                 href: 'https://dbdocs.io/iasql/iasql',
                 target: '_self'
-              },
-              {
-                label: 'Blog',
-                href: 'https://blog.iasql.com',
-                target: '_self',
               },
               {
                 label: 'GitHub',
@@ -139,14 +110,6 @@ const config = process.env.IASQL_ENV === 'local' ? localConfig : prodConfig;
         additionalLanguages: [],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-      },
-      algolia: {
-        // The application ID provided by Algolia
-        appId: '5D0XPJ20G6',
-        // Public API key: it is safe to commit it
-        apiKey: '3975e3fd292172a78a2092aecca9a2b5',
-        indexName: 'docs-iasql',
-        contextualSearch: true,
       },
     }),
 });
